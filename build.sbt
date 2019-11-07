@@ -1,4 +1,4 @@
-name := "msms-pipeline"
+name := "msms_pipeline"
 
 version := "0.1"
 
@@ -42,7 +42,7 @@ val akkaTypedSettings = Seq(
 )
 
 
-lazy val `msms-pipeline` = (project in file("."))
+lazy val msms_pipeline = (project in file("."))
  .settings(commonSettings)
  .settings(
      libraryDependencies ++= Seq(
