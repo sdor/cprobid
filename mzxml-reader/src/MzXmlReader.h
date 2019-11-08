@@ -3,6 +3,7 @@
 #include <string>
 #include <libxml/xmlreader.h>
 #include <MzXmlIon.h>
+#include <MzXMLEvent.h>
 
 namespace MzXML {
     class MzXmlReader {
@@ -19,7 +20,7 @@ namespace MzXML {
             xmlFreeTextReader(this->reader);
         }
 
-        void read(void (*cb)(const MzXmlIon* ion));
+        void read(void (*cb)(const Event& event));
     };
 }
 #endif

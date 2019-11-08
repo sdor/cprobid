@@ -39,13 +39,6 @@ sdoronin@notes.cc.sunysb.edu
 #include <gsl/gsl_vector.h>
 #include <gsl/gsl_statistics.h>
 #include <gsl/gsl_combination.h>
-#include <xercesc/sax2/SAX2XMLReader.hpp>
-#include <xercesc/sax2/XMLReaderFactory.hpp>
-#include <xercesc/util/PlatformUtils.hpp>
-#include <xercesc/util/XMLString.hpp>
-#include <xercesc/framework/LocalFileInputSource.hpp>
-#include <xercesc/framework/XMLValidator.hpp>
-#include "dta_sax_handler.h"
 #include "search_parameters.h"
 #include "dictionary.h"
 #include "experimental_ion.h"
@@ -56,10 +49,12 @@ sdoronin@notes.cc.sunysb.edu
 #include "precursor_ion.h"
 #include "experimental_ion.h"
 #include "msms_run.h"
+#include <MzXmlReader.h>
+#include <boost/filesystem.hpp>
 
-XERCES_CPP_NAMESPACE_USE
+// XERCES_CPP_NAMESPACE_USE
 using namespace std;
-string version="cprobid 1.0.5";
+string version="cprobid 0.1.0";
 double ms_error=0.25;
 double msms_error=0.15;
 int n_to_keep=10;
@@ -161,8 +156,8 @@ void process_parameter_line(string s) {
 	}
 
 }
-void read_parametrs(char* file_name) {
-	if (access(file_name, R_OK) !=-1) {
+void read_parameters(char* file_name) {
+	if(boost::filesystem::exists(file_name)) {
 		string line;
 		ifstream in;
 		in.open(file_name, ios_base::in);
@@ -170,11 +165,24 @@ void read_parametrs(char* file_name) {
 			getline(in, line, '\n');
 			process_parameter_line(line);
 		} while (!in.eof());
-		in.close();
+		in.close();		
 	} else {
 		cout<<"File "<<file_name<<" does not exist or access is not permited\n";
-		exit(0);
+		exit(0);		
 	}
+	// if (access(file_name, R_OK) !=-1) {
+	// 	string line;
+	// 	ifstream in;
+	// 	in.open(file_name, ios_base::in);
+	// 	do {
+	// 		getline(in, line, '\n');
+	// 		process_parameter_line(line);
+	// 	} while (!in.eof());
+	// 	in.close();
+	// } else {
+	// 	cout<<"File "<<file_name<<" does not exist or access is not permited\n";
+	// 	exit(0);
+	// }
 }
 
 protein process_fasta_entry(string entry) {
@@ -516,39 +524,42 @@ void run(msms_run* msmsrun) {
 	cout<<"Statistic is done\n";
 }
 
-void convertToDta(const string& fileName) {
-	try
-	{
-		XMLPlatformUtils::Initialize();
-		dta_sax_handler* handler;
-		handler = new dta_sax_handler();
-		handler->minPrecursorCharge()=min_precursor_charge;
-		handler->maxPrecursorCharge()=max_precursor_charge;
-		handler->setFileName(fileName.c_str());
-		cout << "Converting " << fileName << " to thermofinnigan dta\n";
-		SAX2XMLReader* parser = XMLReaderFactory::createXMLReader();
-		parser->setFeature(XMLUni::fgSAX2CoreValidation, false);
-		parser->setFeature(XMLUni::fgSAX2CoreNameSpaces, false);
-		parser->setFeature(XMLUni::fgXercesSchema, false);
-		parser->setFeature(XMLUni::fgXercesSchemaFullChecking, false);
-		parser->setFeature(XMLUni::fgSAX2CoreNameSpacePrefixes, false);
-		parser->setFeature(XMLUni::fgXercesContinueAfterFatalError, true);
-		parser->setContentHandler( handler );
-		parser->setErrorHandler( handler );
-		parser->parse( fileName.c_str() );
-		delete parser;
-		delete handler;
-		XMLPlatformUtils::Terminate();
-	} catch (const XMLException& toCatch) {
-		char* message = XMLString::transcode(toCatch.getMessage());
-		cout << "Error during initialization! :\n"
-		<< "Exception message is: \n"
-		<< message << "\n";
-		XMLString::release(&message);
-		exit(1);
-	}
+// void convertToDta(const string& fileName) {
+// 	// try {
+// 		MzXML::MzXmlReader reader(fileName);
+// 		reader.read([](const MzXML::MzXmlIon* ion) {
 
-}
+// 		});
+// 		// XMLPlatformUtils::Initialize();
+// 		// dta_sax_handler* handler;
+// 		// handler = new dta_sax_handler();
+// 		// handler->minPrecursorCharge()=min_precursor_charge;
+// 		// handler->maxPrecursorCharge()=max_precursor_charge;
+// 		// handler->setFileName(fileName.c_str());
+// 		// cout << "Converting " << fileName << " to thermofinnigan dta\n";
+// 		// SAX2XMLReader* parser = XMLReaderFactory::createXMLReader();
+// 		// parser->setFeature(XMLUni::fgSAX2CoreValidation, false);
+// 		// parser->setFeature(XMLUni::fgSAX2CoreNameSpaces, false);
+// 		// parser->setFeature(XMLUni::fgXercesSchema, false);
+// 		// parser->setFeature(XMLUni::fgXercesSchemaFullChecking, false);
+// 		// parser->setFeature(XMLUni::fgSAX2CoreNameSpacePrefixes, false);
+// 		// parser->setFeature(XMLUni::fgXercesContinueAfterFatalError, true);
+// 		// parser->setContentHandler( handler );
+// 		// parser->setErrorHandler( handler );
+// 		// parser->parse( fileName.c_str() );
+// 		// delete parser;
+// 		// delete handler;
+// 		// XMLPlatformUtils::Terminate();
+// 	// } catch (const XMLException& toCatch) {
+// 		// char* message = XMLString::transcode(toCatch.getMessage());
+// 		// cout << "Error during initialization! :\n"
+// 		// << "Exception message is: \n"
+// 		// << message << "\n";
+// 		// XMLString::release(&message);
+// 		// exit(1);
+// 	// }
+
+// }
 /**
  *
  * @param argc
@@ -559,7 +570,7 @@ int main(int argc, char* argv[]) {
 	cout<<version<<endl;
 	if (argc > 0) {
 		double execution_time=0.0;
-		read_parametrs(argv[1]);
+		read_parameters(argv[1]);
 		cout<<"Loading proteins from "<<search_database<<endl;
 		load_fasta(search_database);
 		search_parameters param;
@@ -570,7 +581,7 @@ int main(int argc, char* argv[]) {
 			time_t end_time;
 			time(&start_time);
 			string mzXMLFile=(*data_iterator)+".mzXML";
-			convertToDta(mzXMLFile);
+			// convertToDta(mzXMLFile);
 			msms_run r;
 			cout<<"Loading msms-data:"<<data_iterator->c_str()<<endl;
 			r.setBaseName(*data_iterator);

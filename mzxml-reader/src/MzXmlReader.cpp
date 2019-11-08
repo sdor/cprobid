@@ -7,8 +7,11 @@
 #include <libxml/xpath.h>
 #include <libxml/xmlreader.h>
 #include <MzXmlPrecursorIon.h>
+#include <MzXMLEvent.h>
+#include <MzXmlParentFile.h>
+#include <MzXmlInstrument.h>
 namespace MzXML {
-  void MzXmlReader::read(void (*cb)(const MzXmlIon* ion)) {
+  void MzXmlReader::read(void (*cb)(const Event& event)) {
     MzXmlIon* ion;
       
     if (this->reader == nullptr) { return; }
@@ -90,10 +93,60 @@ namespace MzXML {
           xmlFree(peaksValue);
           xmlFree(_precision);
         } else if(xmlTextReaderNodeType(reader) == XML_READER_TYPE_END_ELEMENT && xmlStrEqual(xmlTextReaderConstLocalName(reader), (const xmlChar *) "scan") == 1) {
-          auto f = std::async(cb,ion);
+          Event event(MzXML_ION_EVENT,ion);
+          auto f = std::async(cb,event);
           f.wait();
           delete ion;
+        } else if(xmlTextReaderNodeType(this->reader) == XML_READER_TYPE_ELEMENT && xmlStrEqual(xmlTextReaderConstLocalName(reader), (const xmlChar *) "parentFile") == 1) {
+          auto _fileName = xmlTextReaderGetAttribute(this->reader, (const xmlChar*)"fileName");
+          auto _fileType = xmlTextReaderGetAttribute(this->reader, (const xmlChar*)"fileType");
+          auto _fileSHA1 = xmlTextReaderGetAttribute(this->reader, (const xmlChar*)"fileSHA1");
+          std::string fileName;
+          std::string fileType;
+          std::string fileSHA1;
+          if(_fileName != nullptr) {
+            fileName = (const char*)_fileName;
+          }
+          if(_fileType != nullptr) {
+            fileType = (const char*)_fileType;
+          }
+          if(_fileSHA1 != nullptr) {
+            fileSHA1 = (const char*)_fileSHA1;
+          }
+          ParentFile parentFile(fileName,fileType,fileSHA1);
+          Event event(PARENT_FILE_EVENT,&parentFile);
+          auto f = std::async(cb,event);
+          f.wait();          
+          xmlFree(_fileName);
+          xmlFree(_fileType);
+          xmlFree(_fileSHA1);
+
+        } else if(xmlTextReaderNodeType(this->reader) == XML_READER_TYPE_ELEMENT && xmlStrEqual(xmlTextReaderConstLocalName(reader), (const xmlChar *) "instrument") == 1) {
+          auto _manufacturer = xmlTextReaderGetAttribute(this->reader,(const xmlChar*)"manufacturer");         
+          auto _model = xmlTextReaderGetAttribute(this->reader,(const xmlChar*)"model");         
+          auto _ionization = xmlTextReaderGetAttribute(this->reader,(const xmlChar*)"ionization");         
+          auto _msType = xmlTextReaderGetAttribute(this->reader,(const xmlChar*)"msType");         
+
+          std::string manufacturer;
+          std::string model;
+          std::string ionization;
+          std::string msType;
+
+          if(_manufacturer != nullptr) manufacturer = (const char*)_manufacturer;
+          if(_model != nullptr) model = (const char*)_model;
+          if(_ionization != nullptr) ionization = (const char*)_ionization;
+          if(_msType != nullptr) msType = (const char*)_msType;
+
+          Instrument instrument(manufacturer,model,ionization,msType);
+          Event event(INSTRUMENT_EVENT,&instrument);
+          auto f= std::async(cb,event);
+          f.wait();
+          xmlFree(_manufacturer);
+          xmlFree(_model);
+          xmlFree(_ionization);
+          xmlFree(_msType);
         }
+        //TODO: handle dataProcessing tag
     }
   };
 }
