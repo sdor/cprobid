@@ -34,6 +34,7 @@ find_package(
 # add_subdirectory(read-pubmed)
 # add_subdirectory(pubmed-persists)
 add_subdirectory(mzxml-reader)
+add_subdirectory(probeid)
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
