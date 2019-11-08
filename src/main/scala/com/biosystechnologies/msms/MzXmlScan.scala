@@ -15,5 +15,5 @@ case class MzXmlScan (
   basePeakIntensity: Option[Float] = None,
   totIonCurrent:     Option[Float] = None,
   peaksPrecision: Int,
-  ions: Array[(Double,Double)]
+  ions: Array[Ion]
 )  extends IonScan

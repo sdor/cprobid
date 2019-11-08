@@ -8,13 +8,13 @@ object MsMsMatcher {
      config.getDouble("msms_pipeline.msms_epsilon")
    }
 
-   def numMatchMsMsScans(a: IonScan, b: IonScan) = {
-     val matchMissMatch: Array[Array[(Double, Boolean)]] = a.masses.map {
-       a_mass =>
-         b.masses.map {
-           b_mass =>
-             abs(a_mass - b_mass) <= msms_epsilon
-         }.map((a_mass,_))
-     }
-   }
+  //  def numMatchMsMsScans(a: IonScan, b: IonScan) = {
+  //    val matchMissMatch: Array[Array[(Double, Boolean)]] = a.masses.map {
+  //      a_mass =>
+  //        b.masses.map {
+  //          b_mass =>
+  //            abs(a_mass - b_mass) <= msms_epsilon
+  //        }.map((a_mass,_))
+  //    }
+  //  }
 }

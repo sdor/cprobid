@@ -28,7 +28,7 @@ object MzXmlParser {
       var basePeakIntensity: Option[Float ] = None
       var totIonCurrent:     Option[Float ] = None
       var peaksPrecision: Int = 32
-      var ions: Array[(Double,Double)] = new Array(0)
+      var ions: Array[Ion] = new Array(0)
 
       event => event match {
         case s: StartElement if s.localName == "scan" =>
@@ -52,7 +52,7 @@ object MzXmlParser {
             ions = ByteString(Base64.getDecoder.decode(peaksBuffer.result())).grouped(8).map {
               bs =>
                 val Array(mz, int) = bs.grouped(4).map(_.asByteBuffer.getFloat).toArray
-                (mz.toDouble, int.toDouble)
+                Ion(mz = mz.toDouble, intensity = Some(int.toDouble))
             }.toArray
             List(MzXmlScan(
               num = num,
@@ -72,8 +72,8 @@ object MzXmlParser {
           } else if(peaksPrecision == 64) {
             ions = ByteString(Base64.getDecoder.decode(peaksBuffer.result())).grouped(16).map {
               bs =>
-                val Array(mz, int) = bs.grouped(8).map(_.asByteBuffer.getDouble).toArray
-                (mz, int)
+                val Array(mz, intensity) = bs.grouped(8).map(_.asByteBuffer.getDouble).toArray
+                Ion(mz, Some(intensity))
             }.toArray
             List(MzXmlScan(
               num = num,
