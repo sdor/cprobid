@@ -355,31 +355,30 @@ vector<amino_acid_sequence> amino_acid_sequence::derivatives(vector<amino_acid_m
 	double mw=this->MonoMw();
 	if (mw<=maxMw) {
 		if (!modifications->empty()) {
-			vector<modification_info> sites=
-					this->modification_sites(modifications);
+			vector<modification_info> sites= this->modification_sites(modifications);
 			if (!sites.empty()) {
 				vector<unsigned int> positions;
 				positions.resize(this->sequence.size());
-				size_t n=sites.size();
-				size_t k=max_mod_number;
-				if (n<=k) {
-					k=n;
+				size_t n = sites.size();
+				size_t k = max_mod_number;
+				if (n <= k) {
+					k = n;
 				}
 				for (size_t j=0; j<=k; j++) {
-					gsl_combination * c=gsl_combination_calloc(n, j);
+					gsl_combination *c = gsl_combination_alloc(n, j);
 					if (c != NULL) {
 						do {
 							positions.assign(positions.size(),0);
-							unsigned int max_mod_per_site=0;
+							unsigned int max_mod_per_site = 0;
 							vector<int> mindex;
 							mindex.resize(j);
-							for (size_t i=0; i<j; i++) {
-								size_t cel=gsl_combination_get(c, i);
+							for (size_t i = 0; i < j; i++) {
+								size_t cel = gsl_combination_get(c, i);
 								modification_info site;
-								site=sites[cel];
+								site = sites[cel];
 								positions[site.position]+=1;
-								if(max_mod_per_site<positions[site.position]){
-									max_mod_per_site=positions[site.position];
+								if(max_mod_per_site < positions[site.position]){
+									max_mod_per_site = positions[site.position];
 								}
 								mindex[i]=cel;
 								//cout<<cel<<" ";
