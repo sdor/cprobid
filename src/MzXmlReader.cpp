@@ -43,7 +43,9 @@ void MzXmlReader::read() {
         precision = std::atoi((const char*)_precision);
         peaksValue = (char *)xmlTextReaderReadInnerXml(reader);
         if(precision == 32){
-            peaksBuff = (char *)new char[8*peaksCount];
+          peaksBuff = (char *)new char[8*peaksCount];
+        } else if(precision == 64) {
+          peaksBuff = (char *)new char[16*peaksCount];
         }
         xmlFree(_precision);
       } else if(xmlTextReaderNodeType(reader) == XML_READER_TYPE_END_ELEMENT && xmlStrEqual(xmlTextReaderConstLocalName(reader), (const xmlChar *) "peaks") == 1) {
