@@ -52,7 +52,7 @@ object MzXmlParser {
             ions = ByteString(Base64.getDecoder.decode(peaksBuffer.result())).grouped(8).map {
               bs =>
                 val Array(mz, int) = bs.grouped(4).map(_.asByteBuffer.getFloat).toArray
-                Ion(mz = mz.toDouble, intensity = Some(int.toDouble))
+                ExperimentalIon(mz = mz.toDouble, intensity = Some(int.toDouble))
             }.toArray
             List(MzXmlScan(
               num = num,
@@ -73,7 +73,7 @@ object MzXmlParser {
             ions = ByteString(Base64.getDecoder.decode(peaksBuffer.result())).grouped(16).map {
               bs =>
                 val Array(mz, intensity) = bs.grouped(8).map(_.asByteBuffer.getDouble).toArray
-                Ion(mz, Some(intensity))
+                ExperimentalIon(mz, Some(intensity))
             }.toArray
             List(MzXmlScan(
               num = num,
