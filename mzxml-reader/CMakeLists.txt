@@ -28,6 +28,7 @@ include(CTest)
 add_executable(
     mzxml-reader-test 
   ${MODULE_PATH}/tests/main.cpp
+  ${MODULE_PATH}/tests/test_read.cpp
 )
 target_link_libraries(mzxml-reader-test Catch2::Catch ${Boost_LIBRARIES} mzxml-reader)
 

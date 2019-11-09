@@ -327,8 +327,7 @@ void match(protein *proteinPtr, char front_cod, const amino_acid_sequence* s, ve
 			totalN=vv[0].size();
 			missedN=totalN-match1.nmatched;
 
-			miss_match_score=missedN*(-log(a->max_fragment_mz()
-					-a->min_fragment_mz()));
+			miss_match_score=missedN*(-log(a->max_fragment_mz()-a->min_fragment_mz()));
 
 			immonium_score=a->immonium_score(immonium_cod);
 

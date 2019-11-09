@@ -21,6 +21,7 @@ namespace MzXML {
         }
 
         void read(void (*cb)(const Event& event));
+
     };
 }
 #endif
