@@ -19,7 +19,7 @@ namespace MzXML {
         double basePeakIntensity;
         double totIonCurrent;
         std::optional<MzXmlPrecursorIon> precursorIon;
-        std::vector<int64_t> peaks;
+        std::vector<double> peaks;
     } MzXmlIon;
 
 }

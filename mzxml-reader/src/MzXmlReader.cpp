@@ -1,3 +1,4 @@
+#include <cstring>
 #include <MzXmlReader.h>
 #include <base64.h>
 #include <algorithm>
@@ -73,22 +74,27 @@ namespace MzXML {
             auto peaks = new uint32_t[peaksSize];
             b64_decode_mio ((char *)peaks, (char *)peaksValue);
             std::transform(peaks,peaks+peaksSize,peaks,[](uint32_t v) {
-              return ntohl(v);
+              return (v << 24) | ((v << 8) & 0xFF0000) | (v >> 24) | ((v >> 8) & 0x00FF00);
             });
             ion->peaks.resize(peaksSize);
             std::transform(peaks, peaks+peaksSize, begin(ion->peaks), [](uint32_t v) {
-              uint64_t _v = v;
-              return _v;
+              double f;
+              f = *((float *)&v);
+              return f;
             }); 
             delete[] peaks;
           } else if(precision == 64) {
             auto peaks = new uint64_t[peaksSize];
             b64_decode_mio ((char *)peaks, (char *)peaksValue);
             std::transform((uint32_t*) peaks,((uint32_t*)peaks)+2*peaksSize,peaks,[](uint32_t v) {
-              return ntohl(v);
+              return (v << 24) | ((v << 8) & 0xFF0000) | (v >> 24) | ((v >> 8) & 0x00FF00);
             });
             ion->peaks.resize(peaksSize);
-            std::copy(peaks, peaks+peaksSize, begin(ion->peaks)); 
+            std::transform(peaks, peaks+peaksSize, begin(ion->peaks),[](uint64_t v){
+              double f;
+              f = *((double*)&v);
+              return f;
+            }); 
             delete[] peaks;
           }
           xmlFree(peaksValue);
