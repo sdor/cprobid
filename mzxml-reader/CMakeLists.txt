@@ -26,7 +26,7 @@ target_link_libraries(
 
 include(CTest)
 add_executable(
-    mzxml-reader-test 
+  mzxml-reader-test 
   ${MODULE_PATH}/tests/main.cpp
   ${MODULE_PATH}/tests/test_read.cpp
 )
@@ -34,7 +34,6 @@ target_link_libraries(mzxml-reader-test Catch2::Catch ${Boost_LIBRARIES} mzxml-r
 
 catch_discover_tests(
   mzxml-reader-test
-   PROPERTIES ENVIRONMENT TEST_DATA_LOC=${PROJECT_SOURCE_DIR}/test-data
 )
 
 set (MZXML_READER_LIB_INCLUDE_PATH  ${LIB_INCLUDE_PATH} PARENT_SCOPE)

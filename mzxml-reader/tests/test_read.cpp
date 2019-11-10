@@ -6,7 +6,7 @@ void cb(const MzXML::Event &event) {
   std::cout<< event.getEventType() << std::endl;
 }
 TEST_CASE( "read mzxml", "[MzXmlReader]" ) {
-    MzXML::MzXmlReader reader("/Users/sergey/Downloads/raftapr_mzXML/raft1213.mzXM");
+    MzXML::MzXmlReader reader("/home/sergey/Downloads/raftapr_mzXML/raft1213.mzXML");
     reader.read(cb);
     REQUIRE(1 == 1);
     // REQUIRE(ri.id.id == 1)

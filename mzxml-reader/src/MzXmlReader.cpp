@@ -10,6 +10,7 @@
 #include <MzXMLEvent.h>
 #include <MzXmlParentFile.h>
 #include <MzXmlInstrument.h>
+#include <arpa/inet.h>
 namespace MzXML {
   void MzXmlReader::read(void (*cb)(const Event& event)) {
     MzXmlIon* ion;
