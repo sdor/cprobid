@@ -1,5 +1,5 @@
-set(MODULE_NAME "cprobeid")
-set(MODULE_PATH "${PROJECT_SOURCE_DIR}/probeid")
+set(MODULE_NAME "cprobid")
+set(MODULE_PATH "${PROJECT_SOURCE_DIR}/probid")
 set(MODULE_SRC_PATH "${MODULE_PATH}/src")
 set(MODULE_INCLUDE_PATH "${MODULE_PATH}/src")
 
