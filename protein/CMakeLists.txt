@@ -17,6 +17,8 @@ include_directories(
 add_library(
     ${LIB_NAME} SHARED
     src/protein.cpp
+    src/AminoAcid.cpp
+    src/AminoAcidSeq.cpp
     # src/base64.c
     # src/MzXmlReader.cpp
 )
@@ -33,7 +35,7 @@ include(CTest)
 add_executable(
   "${LIB_NAME}-test" 
   ${MODULE_PATH}/tests/main.cpp
-#   ${MODULE_PATH}/tests/test_read.cpp
+  ${MODULE_PATH}/tests/test_amino_acid_seq.cpp
 )
 target_link_libraries("${LIB_NAME}-test" Catch2::Catch ${Boost_LIBRARIES} ${LIB_NAME})
 
