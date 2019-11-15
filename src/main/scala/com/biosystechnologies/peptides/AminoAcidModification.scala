@@ -1,5 +1,6 @@
 package com.biosystechnologies.peptides
 
-class AminoAcidModification {
-
+trait AminoAcidModification {
+  def name: Option[String]
+  def deltaMw: Double
 }
