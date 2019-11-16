@@ -81,12 +81,16 @@ object Trypsin {
       } yield {
          var res = peptides
          for(n <- 1 to numMissed)  {
-           res = res :++ peptides.grouped(n+1).filter(list => list.length == n+1).map {
-             list =>
-               list.fold(AminoAcidSeq(""))((a, b) => {
-                 AminoAcidSeq.concat(a, b)
-               })
-           }.toList
+           if(peptides.length >= n +1) {
+             var h: List[AminoAcidSeq] = peptides.take(n + 1)
+             var t: List[AminoAcidSeq] = peptides.drop(1)
+             while (t.length >= n + 1) {
+               val pep = h.fold(AminoAcidSeq(""))((a, b) => AminoAcidSeq.concat(a, b))
+               res = res :+ pep
+               h = t.take(n + 1)
+               t = t.drop(1)
+             }
+           }
         }
         res
       }

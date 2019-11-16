@@ -33,12 +33,12 @@ class TrypsinTest extends AsyncFlatSpec with Matchers with BeforeAndAfterAll {
        digest <- Trypsin.digest(aminoAcidSeq,  1)
      } yield {
        digest should equal(List(
-         AminoAcidSeq(List(NTerminal, Met, Ala, Ala, Ala, Arg, CTerminal),List()),
-         AminoAcidSeq(List(NTerminal, Leu, Leu, Leu, Lys, CTerminal),List()),
-         AminoAcidSeq(List(NTerminal, Val, Val, Val, Arg, Pro, Ser, Ser, Ser, Lys, Pro, Tyr, Tyr, Tyr,Arg, CTerminal),List()),
+         AminoAcidSeq(List(NTerminal, Met, Ala, Ala, Ala, Arg, CTerminal)),
+         AminoAcidSeq(List(NTerminal, Leu, Leu, Leu, Lys, CTerminal)),
+         AminoAcidSeq(List(NTerminal, Val, Val, Val, Arg, Pro, Ser, Ser, Ser, Lys, Pro, Tyr, Tyr, Tyr,Arg, CTerminal)),
          AminoAcidSeq(List(NTerminal,Ala,CTerminal)),
          AminoAcidSeq(List(NTerminal, Met, Ala, Ala, Ala, Arg, Leu, Leu, Leu, Lys, CTerminal)),
-         AminoAcidSeq(List(NTerminal, Leu, Leu, Leu, Lys, Val, Val, Val, Arg, Pro, Ser, Ser, Ser, Lys, Pro, Tyr, Tyr, Tyr,Arg, CTerminal),List()),
+         AminoAcidSeq(List(NTerminal, Leu, Leu, Leu, Lys, Val, Val, Val, Arg, Pro, Ser, Ser, Ser, Lys, Pro, Tyr, Tyr, Tyr,Arg, CTerminal)),
        ))
      }
    }
