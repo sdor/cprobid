@@ -1,6 +1,8 @@
 package com.biosystechnologies.peptides
 
-case class AminoAcidSeq(seq: Array[AminoAcid],modifications: List[AminoAcidSeqModification]=List())
+case class AminoAcidSeq(seq: Array[AminoAcid], modifications: List[AminoAcidSeqModification]=List()) {
+    
+}
 
 object AminoAcidSeq {
 
