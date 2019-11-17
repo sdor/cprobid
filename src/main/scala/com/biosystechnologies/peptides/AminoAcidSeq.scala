@@ -36,7 +36,7 @@ object AminoAcidSeq {
         numProtonSites = aminoAcidSeq.seq.map {
             aa =>
               val site: Int =  aa match {
-                    case NTerminal if modifiedAt(aminoAcidSeq, 0) => 1
+                    case NTerminal if modifiedAt(aminoAcidSeq, 0) => 0
                     case NTerminal => 1
                     case Lys if modifiedAt(aminoAcidSeq, pos ) => 0
                     case Lys => 1
@@ -50,8 +50,43 @@ object AminoAcidSeq {
         Range(1,numProtonSites,1).toList
     }
 
-    def bIons(aminoAcidSeq: AminoAcidSeq):List[PeptideIon] = {
-        val _monoIsotopicMass = monoIsotopicMass(aminoAcidSeq)
-        expectedIonCharges(aminoAcidSeq).map(PeptideIon(_,_monoIsotopicMass))
+//    def peptideBIon(aminoAcidSeq: AminoAcidSeq): List[PeptideIon] = {
+//        val _monoIsotopicMass = monoIsotopicMass(aminoAcidSeq)
+//        expectedIonCharges(aminoAcidSeq).map(PeptideIon(_,_monoIsotopicMass))
+//    }
+
+    def immoniumIons(aminoAcidSeq: AminoAcidSeq): List[ImmoniumIon] = {
+        import ImmoniumCod._
+        var immoniumCods: Set[ImmoniumCod] = Set()
+        for(aa <- aminoAcidSeq.seq) {
+            val immoniumCod: ImmoniumCod = aa
+            immoniumCod match {
+                case NTerminalImmoniumCod =>
+                case CTerminalImmoniumCod =>
+                case UnknownImmoniumCod =>
+                case cod =>
+                    immoniumCods = immoniumCods + cod
+            }
+        }
+        immoniumCods.iterator.flatMap {
+            cod =>
+                val immoniumIonsList: List[ImmoniumIon] = cod
+                immoniumIonsList
+        }.toList
+    }
+
+    def BandYIons(aminoAcidSeq: AminoAcidSeq) = {
+        val seq: Seq[AminoAcid] = aminoAcidSeq.seq
+        for(i <- 1 to seq.length) {
+            val (bpep, ypep) = seq.splitAt(i)
+            var bpepMw: Double = {
+                aminoAcidSeq.modifications.find(_.pos == 0).map(_.modification.deltaMonoIsotopicMw).getOrElse(0.0)
+            }
+            for(aa <- bpep) {
+                //TODO: take into account amino acid modifications
+                bpepMw = bpepMw + aa.monoMw
+            }
+
+        }
     }
 }
