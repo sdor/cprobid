@@ -86,7 +86,7 @@ object AminoAcidSeq {
                 //TODO: take into account amino acid modifications
                 bpepMw = bpepMw + aa.monoMw
             }
-
+            bpepMw = bpepMw - Hydrogen.monoIsotopicMass
         }
     }
 }
