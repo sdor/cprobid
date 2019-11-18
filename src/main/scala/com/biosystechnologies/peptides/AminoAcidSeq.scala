@@ -2,6 +2,8 @@ package com.biosystechnologies.peptides
 
 import com.biosystechnologies.chemical.{Hydrogen, Oxygen}
 
+import scala.collection.mutable
+
 case class AminoAcidSeq(seq: List[AminoAcid],modifications: List[AminoAcidSeqModification]=List())
 
 object AminoAcidSeq {
@@ -19,11 +21,11 @@ object AminoAcidSeq {
     def monoIsotopicMass(aminoAcidSeq: AminoAcidSeq): Double = {
         var mass: Double = 0.0
         var modificationsMass = 0.0
-        mass = aminoAcidSeq.seq.slice(1, aminoAcidSeq.seq.length - 1).map(_.monoMw).fold(mass)((a, b) => {
-            a + b - waterMonoIsotopicMass
-        })
+        for(aa <- aminoAcidSeq.seq) {
+            mass = mass + aa.monoMw
+        }
         modificationsMass = aminoAcidSeq.modifications.map(_.modification.deltaMonoIsotopicMw).fold(modificationsMass)(_ + _)
-        mass + modificationsMass
+        mass + modificationsMass + waterMonoIsotopicMass
     }
 
     def modifiedAt(aminoAcidSeq: AminoAcidSeq, pos: Int):Boolean = {
@@ -50,10 +52,6 @@ object AminoAcidSeq {
         Range(1,numProtonSites,1).toList
     }
 
-//    def peptideBIon(aminoAcidSeq: AminoAcidSeq): List[PeptideIon] = {
-//        val _monoIsotopicMass = monoIsotopicMass(aminoAcidSeq)
-//        expectedIonCharges(aminoAcidSeq).map(PeptideIon(_,_monoIsotopicMass))
-//    }
 
     def immoniumIons(aminoAcidSeq: AminoAcidSeq): List[ImmoniumIon] = {
         import ImmoniumCod._
@@ -75,10 +73,14 @@ object AminoAcidSeq {
         }.toList
     }
 
-    def BandYIons(aminoAcidSeq: AminoAcidSeq) = {
+    def cid(aminoAcidSeq: AminoAcidSeq) = {
         val seq: Seq[AminoAcid] = aminoAcidSeq.seq
-        for(i <- 1 to seq.length) {
+        val peptideMw = AminoAcidSeq.monoIsotopicMass(aminoAcidSeq)
+        val bIons: mutable.ArrayBuffer[PeptideIon] = new mutable.ArrayBuffer[PeptideIon]()
+        val yIons: mutable.ArrayBuffer[PeptideIon] = new mutable.ArrayBuffer[PeptideIon]()
+        for(i <- 2 to seq.length - 2) {
             val (bpep, ypep) = seq.splitAt(i)
+
             var bpepMw: Double = {
                 aminoAcidSeq.modifications.find(_.pos == 0).map(_.modification.deltaMonoIsotopicMw).getOrElse(0.0)
             }
@@ -86,7 +88,21 @@ object AminoAcidSeq {
                 //TODO: take into account amino acid modifications
                 bpepMw = bpepMw + aa.monoMw
             }
-            bpepMw = bpepMw - Hydrogen.monoIsotopicMass
+
+            bIons.addOne(PeptideIon(1,monoIsotopicMass = bpepMw))
+
+            //TODO: c-terminal modification
+            var ypepMw: Double = {
+                0.0
+            }
+            for(aa <- ypep) {
+                //TODO: take into account amino acid modifications
+                ypepMw = ypepMw + aa.monoMw
+            }
+
+            yIons.addOne(PeptideIon(1,monoIsotopicMass = ypepMw + waterMonoIsotopicMass))
         }
+        bIons.addOne(PeptideIon(1,monoIsotopicMass = peptideMw - waterMonoIsotopicMass))
+        CIDFragments(precursor = PeptideIon(1,peptideMw),bIons=bIons.toList, yIons = yIons.toList, immoniumIons = immoniumIons(aminoAcidSeq))
     }
 }
