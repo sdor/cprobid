@@ -34,9 +34,10 @@ find_package(
 # add_subdirectory(pubmed-utils)
 # add_subdirectory(read-pubmed)
 # add_subdirectory(pubmed-persists)
-add_subdirectory(mzxml-reader)
-add_subdirectory(protein)
+# add_subdirectory(mzxml-reader)
+# add_subdirectory(protein)
 # add_subdirectory(probid)
+add_subdirectory(read-fasta)
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
