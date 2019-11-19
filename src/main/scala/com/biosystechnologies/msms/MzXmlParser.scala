@@ -10,7 +10,26 @@ import akka.stream.scaladsl.Flow
 import akka.util.ByteString
 
 object MzXmlParser {
-
+  def parsePeaks(peaks: String, precision: Int = 32):List[ExperimentalIon] = precision match {
+    case 32 =>
+      ByteString(Base64.getDecoder.decode(peaks)).grouped(8).map {
+        bs =>
+          val Array(mz, int) = bs.grouped(4).map(_.asByteBuffer.getFloat).toArray
+          ExperimentalIon(mz = mz.toDouble, intensity = Some(int.toDouble))
+      }.toList
+    case 64 =>
+      ByteString(Base64.getDecoder.decode(peaks)).grouped(16).map {
+        bs =>
+          val Array(mz, intensity) = bs.grouped(8).map(_.asByteBuffer.getDouble).toArray
+          ExperimentalIon(mz, Some(intensity))
+      }.toList
+    case _ =>
+      ByteString(Base64.getDecoder.decode(peaks)).grouped(8).map {
+        bs =>
+          val Array(mz, int) = bs.grouped(4).map(_.asByteBuffer.getFloat).toArray
+          ExperimentalIon(mz = mz.toDouble, intensity = Some(int.toDouble))
+      }.toList
+  }
   def scanFlow:Flow[ByteString, MzXmlScan, NotUsed] = {
     Flow[ByteString].via(XmlParsing.parser()).statefulMapConcat( () => {
       val peaksBuffer = new StringBuilder()
