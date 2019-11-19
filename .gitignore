@@ -6,3 +6,4 @@ target
 .bloop
 project/.blob
 .idea
+/ws.sc

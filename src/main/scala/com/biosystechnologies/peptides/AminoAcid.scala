@@ -2,149 +2,198 @@ package com.biosystechnologies.peptides
 
 sealed trait AminoAcid {
   def code:Char
-  def cod3:String  
+  def cod3:String
+  def name:String
   def monoMw:Double
   def averageMw:Double
+  def immoniumIon: Double
 }
 
 case object Ala extends AminoAcid {
-  def code = 'A'
-  def cod3 =	"Ala"   
-  def monoMw:Double = 71.03711
-  def averageMw:Double = 71.0788
+  val code = 'A'
+  val cod3 =	"Ala"
+  val name =  "Alanine"
+  val monoMw:Double = 71.03711
+  val averageMw:Double = 71.0788
+  val immoniumIon = 44.05003
 }
 case object Arg extends AminoAcid {
-  def code = 'R'
-  def cod3 =	"Arg"	
-  def monoMw = 156.10111	
-  def averageMw = 156.1875
+  val code = 'R'
+  val cod3 =	"Arg"
+  val name = "Arginine"
+  val monoMw = 156.10111
+  val averageMw = 156.1875
+  val immoniumIon = 129.114
 }
 case object Asn extends AminoAcid {
-  def code = 'N'
-  def cod3 =	"Asn"
-  def monoMw = 114.04293	
-  def averageMw = 114.1038
+  val code = 'N'
+  val cod3 =	"Asn"
+  val name =  "Asparagine"
+  val monoMw = 114.04293
+  val averageMw = 114.1038
+  val immoniumIon = 87.05584
 }
 case object Asp extends AminoAcid {
-  def code = 'D'
-  def cod3 =	"Asp"		  
-  def monoMw = 115.02694	
-  def averageMw = 115.0886
+  val code = 'D'
+  val cod3 =	"Asp"
+  val name =  "Aspartic Acid"
+  val monoMw = 115.02694
+  val averageMw = 115.0886
+  val immoniumIon = 88.03986
 }
 case object Cys extends AminoAcid {
-  def code = 'C'
-  def cod3 =	"Cys"	 
-  def monoMw = 103.00919	
-  def averageMw = 103.1388
+  val code = 'C'
+  val cod3 =	"Cys"
+  val name =  "Cysteine"
+  val monoMw = 103.00919
+  val averageMw = 103.1388
+  val immoniumIon =  76.0221
 }
 case object Glu extends AminoAcid {
-  def code = 'E'
-  def cod3 =	"Glu"		  
-  def monoMw = 129.04259	
-  def averageMw = 129.1155
+  val code = 'E'
+  val cod3 =	"Glu"
+  val name = "Glutamic Acid"
+  val monoMw = 129.04259
+  val averageMw = 129.1155
+  val immoniumIon = 102.0555
 }
 case object Gln extends AminoAcid {
-  def code = 'Q'
-  def cod3 =	"Gln"	  
-  def monoMw = 128.05858	
-  def averageMw = 128.1307
+  val code = 'Q'
+  val cod3 =	"Gln"
+  val name = "Glutamine"
+  val monoMw = 128.05858
+  val averageMw = 128.1307
+  val immoniumIon =  101.0715
 }
 case object Gly extends AminoAcid {
-  def code = 'G'
-  def cod3 =	"Gly"	    
-  def monoMw =  57.02146	
-  def averageMw = 57.0519
+  val code = 'G'
+  val cod3 =	"Gly"
+  val name =  "Glycine"
+  val monoMw =  57.02146
+  val averageMw = 57.0519
+  val immoniumIon = 30.03438
 }
 case object His extends AminoAcid {
-  def code = 'H'
-  def cod3 =	"His"	   
-  def monoMw = 137.05891	
-  def averageMw = 137.1411
+  val code = 'H'
+  val cod3 =	"His"
+  val name = "Histidine"
+  val monoMw = 137.05891
+  val averageMw = 137.1411
+  val immoniumIon = 110.0718
 }
 case object Ile extends AminoAcid {
-  def code = 'I'
-  def cod3 =	"Ile"	  
-  def monoMw = 113.08406	
-  def averageMw = 113.1594
+  val code = 'I'
+  val cod3 =	"Ile"
+  val name = "Isoleucine"
+  val monoMw = 113.08406
+  val averageMw = 113.1594
+  val immoniumIon = 86.09698
 }
 case object Leu extends AminoAcid {
-  def code = 'L'
-  def cod3 =	"Leu"	  
-  def monoMw = 113.08406	
-  def averageMw = 113.1594
+  val code = 'L'
+  val cod3 =	"Leu"
+  val name =  "Leucine"
+  val monoMw = 113.08406
+  val averageMw = 113.1594
+  val immoniumIon = 86.09698
 }
 case object Lys extends AminoAcid {
-  def code = 'K'
-  def cod3 =	"Lys"	 
-  def monoMw = 128.09496	
-  def averageMw = 128.1741
+  val code = 'K'
+  val cod3 =	"Lys"
+  val name =  "Lysine"
+  val monoMw = 128.09496
+  val averageMw = 128.1741
+  val immoniumIon = 101.1079
+  val immoniumIonWithAmmoniaLoss = 84.08136
 }
 case object Met extends AminoAcid {
-  def code = 'M'
-  def cod3 =	"Met"	  
-  def monoMw = 131.04049	
-  def averageMw = 131.1926
+  val code = 'M'
+  val cod3 =	"Met"
+  val name =  "Methionine"
+  val monoMw = 131.04049
+  val averageMw = 131.1926
+  val immoniumIon = 104.0534
 }
 case object Phe extends AminoAcid {
-  def code = 'F'
-  def cod3 =	"Phe"	    
-  def monoMw = 147.06841	
-  def averageMw = 147.1766
+  val code = 'F'
+  val cod3 =	"Phe"
+  val name =  "Phenylalanine"
+  val monoMw = 147.06841
+  val averageMw = 147.1766
+  val immoniumIon =  120.0813
 }
 case object Pro extends AminoAcid {
-  def code = 'P'
-  def cod3 =	"Pro"	    
-  def monoMw =  97.05276	
-  def averageMw = 97.1167
+  val code = 'P'
+  val cod3 =	"Pro"
+  val name =  "Proline"
+  val monoMw =  97.05276
+  val averageMw = 97.1167
+  val immoniumIon = 70.06568
 }
 case object Ser extends AminoAcid {
-  def code = 'S'
-  def cod3 =	"Ser"	   
-  def monoMw =  87.03203	
-  def averageMw = 87.0782
+  val code = 'S'
+  val cod3 =	"Ser"
+  val name =  "Serine"
+  val monoMw =  87.03203
+  val averageMw = 87.0782
+  val immoniumIon = 60.04494
 }
 case object Thr extends AminoAcid {
-  def code = 'T'
-  def cod3 =	"Thr"	   
-  def monoMw = 101.04768	
-  def averageMw = 101.1051
+  val code = 'T'
+  val cod3 =	"Thr"
+  val name =  "Threonine"
+  val monoMw = 101.04768
+  val averageMw = 101.1051
+  val immoniumIon = 74.06059
 }
 case object Trp extends AminoAcid {
-  def code = 'W'
-  def cod3 =	"Trp"	 
-  def monoMw = 186.07931	
-  def averageMw = 186.2132
+  val code = 'W'
+  val cod3 =	"Trp"
+  val name =  "Tryptophan"
+  val monoMw = 186.07931
+  val averageMw = 186.2132
+  val immoniumIon = 159.0922
 }
 case object Tyr extends AminoAcid {
-  def code = 'Y'
-  def cod3 =	"Tyr"	  
-  def monoMw = 163.06333	
-  def averageMw = 163.1760
+  val code = 'Y'
+  val cod3 =	"Tyr"
+  val name =  "Tyrosine"
+  val monoMw = 163.06333
+  val averageMw = 163.1760
+  val immoniumIon = 136.0762
 }
 case object Val extends AminoAcid {
-  def code = 'V'
-  def cod3 =	"Val"	   
-  def monoMw =  99.06841	
-  def averageMw = 99.1326
+  val code = 'V'
+  val cod3 =	"Val"
+  val name =  "Valine"
+  val monoMw =  99.06841
+  val averageMw = 99.1326
+  val immoniumIon = 72.08133
 }
 case object NTerminal extends AminoAcid {
-  def code = '<'
-  def cod3 =	"<"	   
-  def monoMw =  0.0	
-  def averageMw = 0.0
+  val code = '<'
+  val cod3 =	"<"
+  val name =  "NTerminal"
+  val monoMw =  0.0
+  val averageMw = 0.0
+  val immoniumIon = 0.0
 }
 case object CTerminal extends AminoAcid {
-  def code = '>'
-  def cod3 =	">"	   
-  def monoMw =  0.0	
-  def averageMw = 0.0
+  val code = '>'
+  val cod3 =	">"
+  val name = "CTerminal"
+  val monoMw =  0.0
+  val averageMw = 0.0
+  val immoniumIon = 0.0
 }
 
 case object UnknownAminoAcid extends AminoAcid {
-  def code = 'X'
-  def cod3 =	"XXX"	   
-  def monoMw =  0.0	
-  def averageMw = 0.0
+  val code = 'X'
+  val cod3 =	"XXX"
+  val monoMw =  0.0
+  val name = "UnknownAminoAcid"
+  val averageMw = 0.0
+  val immoniumIon = 0.0
 }
 
 object AminoAcid {
