@@ -7,13 +7,14 @@ case class MzXmlScan (
   msLevel:           Option[Int] = None,
   peaksCount:        Option[Int] = None,
   retentionTime:     Option[String] = None,
-  startMz:           Option[Float] = None,
-  endMz:             Option[Float] = None,
-  lowMz:             Option[Float] = None,
-  highMz:            Option[Float] = None,
+  startMz:           Option[Double] = None,
+  endMz:             Option[Double] = None,
+  lowMz:             Option[Double] = None,
+  highMz:            Option[Double] = None,
   basePeakMz:        Double,
-  basePeakIntensity: Option[Float] = None,
-  totIonCurrent:     Option[Float] = None,
+  basePeakIntensity: Option[Double] = None,
+  totIonCurrent:     Option[Double] = None,
   peaksPrecision: Int,
-  ions: Array[Ion]
+  precursorIon: Option[ExperimentalPrecursorIon] = None,
+  ions: List[ExperimentalIon]
 )  extends IonScan

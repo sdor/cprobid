@@ -46,9 +46,10 @@ lazy val msms_pipeline = (project in file("."))
  .settings(commonSettings)
  .settings(
      libraryDependencies ++= Seq(
-        "org.scala-lang.modules" %% "scala-xml" % scalaXmlVersion,
-        "com.lightbend.akka" %% "akka-stream-alpakka-xml" % alpakkaVersion,
-        "com.lightbend.akka" %% "akka-stream-alpakka-file" % alpakkaVersion,
+       "org.scala-lang.modules" %% "scala-xml" % scalaXmlVersion,
+       "com.lightbend.akka" %% "akka-stream-alpakka-xml" % alpakkaVersion,
+       "com.lightbend.akka" %% "akka-stream-alpakka-file" % alpakkaVersion,
+       "org.mongodb.scala" %% "mongo-scala-driver" % "2.7.0",
      )
  )
 

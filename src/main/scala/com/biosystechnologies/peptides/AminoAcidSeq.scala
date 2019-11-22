@@ -105,4 +105,6 @@ object AminoAcidSeq {
         bIons.addOne(PeptideIon(1,monoIsotopicMass = peptideMw - waterMonoIsotopicMass))
         CIDFragments(precursor = PeptideIon(1,peptideMw),bIons=bIons.toList, yIons = yIons.toList, immoniumIons = immoniumIons(aminoAcidSeq))
     }
+
+
 }
