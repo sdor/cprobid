@@ -23,6 +23,7 @@ target_link_libraries(
 )
 
 include(CTest)
+enable_testing()
 add_executable(
   "${LIB_NAME}-test" 
   ${MODULE_PATH}/tests/main.cpp

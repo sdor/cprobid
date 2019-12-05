@@ -2,6 +2,7 @@
 #include <libxml/parser.h>
 #include <libxml/xpath.h>
 #include <iostream>
+#include <cstring>
 #include <string>
 #include <map>
 #include <vector>
@@ -13,6 +14,7 @@ namespace swissprot {
 
    auto namePath = xmlXPathCompile((const xmlChar*)"/entry/name");
    auto proteinRecommendedNamePath = xmlXPathCompile((const xmlChar*)"/entry/protein/recommendedName/fullName");
+   auto sequencePath = xmlXPathCompile((const xmlChar*)"/entry/sequence");
 
    string getContent(xmlXPathObjectPtr obj,xmlXPathContextPtr ctx) {
         string content;
@@ -72,6 +74,18 @@ namespace swissprot {
        string value = getContent(obj,ctx);
        xmlXPathFreeObject(obj);
        return value;
+   }
+
+   element parseSequence(xmlXPathContextPtr ctx) {
+       element sequence;
+       auto obj = xmlXPathCompiledEval(sequencePath,ctx);
+       string value = getContent(obj,ctx);
+       sequence.name = "sequence";
+       sequence.content = value;
+       sequence.attributes = getAttributes(obj,ctx);
+       xmlXPathFreeObject(obj);
+
+       return sequence;
    }
 
 
