@@ -13,6 +13,7 @@ void reader(void *data) {
   string name = parseName(ctx);
   string protein = parseProteinRecommendedName(ctx);
   organism organism = parseOrganism(ctx);
+  sequence sequence = parseSequence(ctx);
   xmlXPathFreeContext(ctx);
   xmlFreeDoc(doc);
   cout << name << "|" << protein << "|" << organism.scientific_name << endl;

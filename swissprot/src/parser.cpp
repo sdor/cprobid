@@ -103,6 +103,7 @@ namespace swissprot {
        xmlXPathFreeObject(obj);
        sequence.checksum = attributes["checksum"];
        sequence.version = atoi(attributes["version"].c_str());
+       sequence.modified = attributes["modified"];
        sequence.sequence = value;
        return sequence;
    }

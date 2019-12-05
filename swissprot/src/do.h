@@ -13,6 +13,7 @@ namespace swissprot {
         string sequence;
         string checksum;
         int version;
+        string modified;
     } sequence;
 }
 #endif

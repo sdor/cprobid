@@ -55,6 +55,7 @@ TEST_CASE( "parse sequence", "[swissprot,parser]" ) {
     // REQUIRE(el.name == "sequence");
     REQUIRE(el.checksum == "B4840739BF7D4121");
     REQUIRE(el.version == 1);
+    REQUIRE(el.modified == "2004-07-19");
     REQUIRE(el.sequence == "PEPTIDE");
 }
 
