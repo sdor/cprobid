@@ -2,6 +2,7 @@
 #define SWISSPROT_PARSER_H
 #include <string>
 #include <map>
+#include <do.h>
 using namespace std;
 namespace swissprot {
     // typedef struct {
@@ -27,7 +28,8 @@ namespace swissprot {
 
     extern string parseName(xmlXPathContextPtr ctx);
     extern string parseProteinRecommendedName(xmlXPathContextPtr ctx);
-    extern element parseSequence(xmlXPathContextPtr ctx);
+    extern sequence parseSequence(xmlXPathContextPtr ctx);
+    extern organism parseOrganism(xmlXPathContextPtr ctx);
 }
 
 #endif

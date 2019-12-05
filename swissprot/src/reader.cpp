@@ -2,6 +2,7 @@
 #include <libxml/parser.h>
 #include <libxml/xpath.h>
 #include <libxml/xmlreader.h>
+#include <iostream>
 #include <reader.h>
 
 namespace swissprot {
@@ -12,6 +13,7 @@ namespace swissprot {
     while (xmlTextReaderRead(reader) == 1) {
       if( xmlTextReaderNodeType(reader) == XML_READER_TYPE_ELEMENT && xmlStrEqual(xmlTextReaderConstLocalName(reader), (const xmlChar *) "entry") == 1) {
         auto entry = xmlTextReaderReadOuterXml(reader);
+        // std::cout << entry << std::endl;
         cb(entry);
         xmlFree(entry);
       }

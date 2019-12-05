@@ -12,9 +12,13 @@
 using namespace std;
 namespace swissprot {
 
-   auto namePath = xmlXPathCompile((const xmlChar*)"/entry/name");
-   auto proteinRecommendedNamePath = xmlXPathCompile((const xmlChar*)"/entry/protein/recommendedName/fullName");
-   auto sequencePath = xmlXPathCompile((const xmlChar*)"/entry/sequence");
+   auto namePath = xmlXPathCompile((const xmlChar*)"/sw:entry/sw:name");
+   auto proteinRecommendedNamePath = xmlXPathCompile((const xmlChar*)"/sw:entry/sw:protein/sw:recommendedName/sw:fullName");
+   auto sequencePath = xmlXPathCompile((const xmlChar*)"/sw:entry/sw:sequence");
+   auto organismPath = xmlXPathCompile((const xmlChar*)"/sw:entry/sw:organism");
+   auto organismScientificName = xmlXPathCompile((const xmlChar*)"/sw:entry/sw:organism/sw:name[@type=\"scientific\"]");
+   auto organismCommonName = xmlXPathCompile((const xmlChar*)"/sw:entry/sw:organism/sw:name[@type=\"common\"]");
+   auto organismTaxonName = xmlXPathCompile((const xmlChar*)"/sw:entry/sw:organism/sw:dbReference[@type=\"NCBI Taxonomy\"]");
 
    string getContent(xmlXPathObjectPtr obj,xmlXPathContextPtr ctx) {
         string content;
@@ -27,6 +31,8 @@ namespace swissprot {
         }
         return content;
    }
+
+   
 
    map<string,string> getAttributes(xmlXPathObjectPtr obj,xmlXPathContextPtr ctx) {
        map<string,string> map;
@@ -63,6 +69,16 @@ namespace swissprot {
        return map;
    }
 
+   string getAttribute(const char* name,xmlXPathObjectPtr obj,xmlXPathContextPtr ctx) {
+       string attribute_value;
+       auto attributes = getAttributes(obj,ctx);
+       auto found = attributes.find(name);
+       if(found != attributes.end()) {
+           attribute_value = found->second;
+       }
+       return attribute_value;
+   }
+
    string parseName(xmlXPathContextPtr ctx) {
        auto obj = xmlXPathCompiledEval(namePath,ctx);
        string value = getContent(obj,ctx);
@@ -76,16 +92,33 @@ namespace swissprot {
        return value;
    }
 
-   element parseSequence(xmlXPathContextPtr ctx) {
-       element sequence;
+   sequence parseSequence(xmlXPathContextPtr ctx) {
+    //    element el;
+       sequence sequence;
        auto obj = xmlXPathCompiledEval(sequencePath,ctx);
        string value = getContent(obj,ctx);
-       sequence.name = "sequence";
-       sequence.content = value;
-       sequence.attributes = getAttributes(obj,ctx);
+    //    el.name = "sequence";
+    //    el.content = value;
+       auto attributes = getAttributes(obj,ctx);
        xmlXPathFreeObject(obj);
-
+       sequence.checksum = attributes["checksum"];
+       sequence.version = atoi(attributes["version"].c_str());
+       sequence.sequence = value;
        return sequence;
+   }
+
+   organism parseOrganism(xmlXPathContextPtr ctx) {
+        organism organism;
+        auto obj = xmlXPathCompiledEval(organismScientificName,ctx);
+        organism.scientific_name = getContent(obj,ctx);
+        xmlXPathFreeObject(obj);
+        obj = xmlXPathCompiledEval(organismCommonName,ctx);
+        organism.common_name = getContent(obj,ctx);
+        xmlXPathFreeObject(obj);
+        obj = xmlXPathCompiledEval(organismTaxonName,ctx);
+        organism.taxon = getAttribute("id",obj,ctx);
+        xmlXPathFreeObject(obj);
+        return organism;
    }
 
 

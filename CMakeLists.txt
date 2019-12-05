@@ -39,6 +39,7 @@ add_subdirectory(mzxml-reader)
 # add_subdirectory(probid)
 add_subdirectory(read-fasta)
 add_subdirectory(swissprot)
+add_subdirectory(read-swissprot)
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
