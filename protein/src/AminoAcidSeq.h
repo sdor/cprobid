@@ -7,8 +7,8 @@
 #include <map>
 #include <numeric>
 #include <AminoAcid.h>
-namespace MassSpec {
-    namespace AminoAcid {
+namespace protein {
+        using namespace amino_acid;
 
         class AminoAcidSeq {
             private:
@@ -27,15 +27,30 @@ namespace MassSpec {
                     return std::accumulate(begin(this->sequence),end(this->sequence),mass,fold);
                 }
 
-                std::map<int, std::vector<AminoAcidSeq>> trypsinize() const;
+                std::map<int, std::vector<AminoAcidSeq>> trypsinize();
+
                 std::string toString() const {
                     std::string seq;
                     seq = std::accumulate(begin(this->sequence),end(this->sequence),seq,[](const std::string& s,const AminoAcid& aa) {
-                        return s + aa.toString();
+                        return s + aa.cod();
                     });
                     return seq;
-                }     
+                }
+
+                AminoAcidSeq& operator = (const string& s) {
+                    std::vector<AminoAcid> new_sequence(s.length());
+                    std::transform(begin(s),end(s),begin(new_sequence),[](char cod) {
+                        AminoAcid aa(cod);
+                        return aa;
+                    });
+                    this->sequence = new_sequence;
+                    return *this;
+                }
+
+                bool operator == (const AminoAcidSeq& seq) const {
+                    return this->sequence == seq.sequence;
+                }
+
         };
-    }
 }
 #endif

@@ -2,70 +2,22 @@
 #define MS_AMINO_ACID_H
 #include <optional>
 using namespace std;
-namespace MassSpec {
-    // namespace AminoAcid {
-    //     class DefaultAminoAcid {
-    //         public:
-    //             enum AminoAcids {
-    //                 Alanine	        =  'A', // Ala	A	aliphatic	nonpolar	neutral	1.8			89.094	8.76	GCN
-    //                 Arginine	    =  'R', // Arg	R	basic	basic polar	positive	−4.5			174.203	5.78	MGN, CGY (coding codons can also be expressed by: CGN, AGR)
-    //                 Asparagine	    =  'N', // Asn	N	amide	polar	neutral	−3.5			132.119	3.93	AAY
-    //                 AsparticAcid    =  'D', // Asp	D	acid	acidic polar	negative	−3.5			133.104	5.49	GAY
-    //                 Cysteine	    =  'C', // Cys	C	sulfur-containing	nonpolar	neutral	2.5	250	0.3	121.154	1.38	UGY
-    //                 Glutamine	    =  'Q', // Gln	Q	amide	polar	neutral	−3.5			146.146	3.9	CAR
-    //                 GlutamicAcid    =  'E', // Glu	E	acid	acidic polar	negative	−3.5			147.131	6.32	GAR
-    //                 Glycine	        =  'G', // Gly	G	aliphatic	nonpolar	neutral	−0.4			75.067	7.03	GGN
-    //                 Histidine	    =  'H', // His	H	basic aromatic	basic polar	positive(10%) neutral(90%)	−3.2	211	5.9	155.156	2.26	CAY
-    //                 Isoleucine	    =  'I', // Ile	I	aliphatic	nonpolar	neutral	4.5			131.175	5.49	AUH
-    //                 Leucine	        =  'L', // Leu	L	aliphatic	nonpolar	neutral	3.8			131.175	9.68	YUR, CUY (coding codons can also be expressed by: CUN, UUR)
-    //                 Lysine	        =  'K', // Lys	K	basic	basic polar	positive	−3.9			146.189	5.19	AAR
-    //                 Methionine	    =  'M', // Met	M	sulfur-containing	nonpolar	neutral	1.9			149.208	2.32	AUG
-    //                 Phenylalanine   =  'F', // Phe	F	aromatic	nonpolar	neutral	2.8	257, 206, 188	0.2, 9.3, 60.0	165.192	3.87	UUY
-    //                 Proline	        =  'P', // Pro	P	cyclic	nonpolar	neutral	−1.6			115.132	5.02	CCN
-    //                 Serine	        =  'S', // Ser	S	hydroxyl-containing	polar	neutral	−0.8			105.093	7.14	UCN, AGY
-    //                 Threonine	    =  'T', // Thr	T	hydroxyl-containing	polar	neutral	−0.7			119.119	5.53	ACN
-    //                 Tryptophan	    =  'W', // Trp	W	aromatic	nonpolar	neutral	−0.9	280, 219	5.6, 47.0	204.228	1.25	UGG
-    //                 Tyrosine	    =  'Y', // Tyr	Y	aromatic	polar	neutral	−1.3	274, 222, 193	1.4, 8.0, 48.0	181.191	2.91	UAY
-    //                 Valine	        =  'V', // Val	V	aliphatic	nonpolar	neutral	4.2			117.148	6.73	GUN
-    //                 NTermininal     =  '<',
-    //                 CTerminal       =  '>', 
-    //                 UknownAminoAcid
-    //             };
-    //         private:
-    //             AminoAcids aminoAcid;
-
-    //         public:
-    //             DefaultAminoAcid() {}
-    //             DefaultAminoAcid(char cod);
-    //             DefaultAminoAcid(const DefaultAminoAcid& aa) {
-    //                 this->aminoAcid = aa.getAminoAcid();
-    //             }
-    //             double monoisotopicMass() const;
-
-    //             AminoAcids getAminoAcid() const { return this->aminoAcid;} 
-
-    //             void setAminoAcid(AminoAcids aminoAcid) {
-    //                 this->aminoAcid = aminoAcid;
-    //             }
-
-    //             bool operator == (const DefaultAminoAcid& aa) const { return this->aminoAcid == aa.aminoAcid;}       
-    //             bool operator == (const DefaultAminoAcid::AminoAcids aa) const { return this->aminoAcid == aa;}
-    //             std::string toString() const;       
-    //     };
-
+namespace protein {
+    namespace amino_acid {
+        
         class AminoAcidModification {
             private:
-                uint _uid;
+                unsigned int _uid;
                 double _monoisotopicDeltaMass;
             public:
                 AminoAcidModification() {}
-                AminoAcidModification(uint uid, double monoisotopicDeltaMass) {
+                AminoAcidModification(unsigned uid, double monoisotopicDeltaMass) {
                     this->_uid = uid;
                     this->_monoisotopicDeltaMass = monoisotopicDeltaMass;
                 }
                 AminoAcidModification(const AminoAcidModification& m): AminoAcidModification(m.uid(),m.monoisotopicDeltaMass()) {}
 
-                uint uid() const { return this->_uid;}
+                unsigned int uid() const { return this->_uid;}
 
                 double monoisotopicDeltaMass() const {
                     return this->_monoisotopicDeltaMass;
@@ -73,7 +25,6 @@ namespace MassSpec {
 
                 bool operator == (const AminoAcidModification& m) const { return this->_uid == m.uid();};
         };
-
         class AminoAcid {
             public:
                 enum AminoAcidType {
@@ -97,7 +48,7 @@ namespace MassSpec {
                     Tryptophan	    =  'W', // Trp	W	aromatic	nonpolar	neutral	−0.9	280, 219	5.6, 47.0	204.228	1.25	UGG
                     Tyrosine	    =  'Y', // Tyr	Y	aromatic	polar	neutral	−1.3	274, 222, 193	1.4, 8.0, 48.0	181.191	2.91	UAY
                     Valine	        =  'V', // Val	V	aliphatic	nonpolar	neutral	4.2			117.148	6.73	GUN
-                    NTermininal     =  '<',
+                    NTerminal     =  '<',
                     CTerminal       =  '>', 
                     UknownAminoAcid
                 };
@@ -110,23 +61,21 @@ namespace MassSpec {
                 }
 
                 AminoAcid(char cod);
-                // AminoAcid(const DefaultAminoAcid& aa, std::optional<AminoAcidModification> modification) {
-                //     this->setAminoAcid(aa.getAminoAcid());
-                //     this->modification = modification;
-                // }
-                // AminoAcid(const AminoAcid& aa): DefaultAminoAcid(aa.getAminoAcid()) {
-                //     this->modification = aa.getModification();
-                // }
+                AminoAcid(const AminoAcid& aa) {
+                    this->residue = aa.residue;
+                    this->modification = aa.modification;
+                }
 
-                double monoisotopicMass() const; 
-                // {
-                //     double result;
-                //     result = this->monoisotopicMass();
-                //     if(this->modification.has_value()) {
-                //         result += this->modification.value().monoisotopicDeltaMass();
-                //     }
-                //     return result;
-                // }
+                double monoisotopicMass() const;
+
+                char cod() const { return this->residue;} 
+
+                AminoAcidType getAminoAcidType() const {
+                    return this->residue;
+                }
+                void setAminoAcidType(AminoAcidType c) {
+                    this->residue = c;
+                }
 
                 std::optional<AminoAcidModification> getModification() const { return this->modification;}
 
@@ -134,10 +83,21 @@ namespace MassSpec {
                    this->modification = modification;
                 } 
 
-                // bool operator == (const DefaultAminoAcid::AminoAcids aa) const { return this->getAminoAcid() == aa;}
-                // bool operator == (const DefaultAminoAcid& aa) const { return *this == aa.getAminoAcid();}
-                // bool operator == (const AminoAcid& aa) const { return this->getAminoAcid() == aa.getAminoAcid() && this->getModification() == aa.getModification();} 
+                bool operator == (char c) const { return this->residue == c;}
+
+                bool operator == (const AminoAcid& aa) const {
+                    return this->residue == aa.residue;
+                }
+
+
         };
+
+
+    }
+
+
+    
+
     // }
   
 
