@@ -24,6 +24,9 @@ namespace protein {
                 };
 
                 bool operator == (const AminoAcidModification& m) const { return this->_uid == m.uid();};
+                bool operator != (const AminoAcidModification& m) const { 
+                    return !(*this == m);
+                };
         };
         class AminoAcid {
             public:
@@ -68,7 +71,7 @@ namespace protein {
 
                 double monoisotopicMass() const;
 
-                char cod() const { return this->residue;} 
+                char cod() const; 
 
                 AminoAcidType getAminoAcidType() const {
                     return this->residue;
@@ -83,10 +86,28 @@ namespace protein {
                    this->modification = modification;
                 } 
 
+                bool is_modified() const {
+                    return this->modification.has_value();
+                }
+
                 bool operator == (char c) const { return this->residue == c;}
 
+
                 bool operator == (const AminoAcid& aa) const {
-                    return this->residue == aa.residue;
+                    if((!this->is_modified()) && (!aa.is_modified())) {
+                        return this->residue == aa.residue;
+                    } else if ((!this->is_modified()) && aa.is_modified()) {
+                        return false;
+                    } else if((this->is_modified()) && (!aa.is_modified())) {
+                        return false;
+                    } else if(this->modification.value() == aa.modification.value()) {
+                        return this->residue == aa.residue;
+                    }
+                    return false;                    
+                }
+
+                bool operator != (const AminoAcid& aa) const {
+                    return !(*this == aa);
                 }
 
 

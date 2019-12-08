@@ -31,9 +31,12 @@ namespace protein {
 
                 std::string toString() const {
                     std::string seq;
-                    seq = std::accumulate(begin(this->sequence),end(this->sequence),seq,[](const std::string& s,const AminoAcid& aa) {
-                        return s + aa.cod();
-                    });
+                    for(auto& aa: this->sequence) {
+                        seq.push_back(aa.cod());
+                    }
+                    // seq = std::accumulate(begin(this->sequence),end(this->sequence),seq,[](const std::string& s,const AminoAcid& aa) {
+                    //     return s + aa.cod();
+                    // });
                     return seq;
                 }
 
@@ -48,9 +51,25 @@ namespace protein {
                 }
 
                 bool operator == (const AminoAcidSeq& seq) const {
-                    return this->sequence == seq.sequence;
+                    bool res = true;
+                    if(this->sequence.size() != seq.sequence.size()) {
+                        return false;
+                    }
+                    auto i = begin(this->sequence);
+                    auto j = begin(seq.sequence);
+                    for(; i != end(this->sequence) && j != end(seq.sequence); i++, j++) {
+                        res = res && (*i == *j);
+                        if(res == false) {
+                            break;
+                        }
+                    }
+                    return res;
                 }
 
+                AminoAcidSeq concat(const AminoAcidSeq& seq) const;
+
         };
+
+        AminoAcidSeq operator + (const AminoAcidSeq& a, const AminoAcidSeq& b) { return a.concat(b);};
 }
 #endif

@@ -35,6 +35,7 @@ include(CTest)
 add_executable(
   "${LIB_NAME}-test" 
   ${MODULE_PATH}/tests/main.cpp
+  ${MODULE_PATH}/tests/test_amino_acid.cpp
   ${MODULE_PATH}/tests/test_amino_acid_seq.cpp
 )
 target_link_libraries("${LIB_NAME}-test" Catch2::Catch ${Boost_LIBRARIES} ${LIB_NAME})

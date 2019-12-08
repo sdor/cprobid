@@ -141,7 +141,62 @@ namespace protein {
                 default:
                     break;
             }
+            if(this->is_modified()) {
+                mass += this->modification.value().monoisotopicDeltaMass();
+            }
             return mass;
+        }
+
+        char AminoAcid::cod() const {
+            switch(this->residue) {
+                case Alanine: 
+                    return 'A';
+                case Arginine: 
+                    return 'R'; 
+                case Asparagine:
+                    return 'N';
+                case     AsparticAcid:
+                    return 'D'; 
+                case Cysteine:
+                    return 'C';
+                case    Glutamine:
+                    return 'E';
+                case GlutamicAcid:
+                    return 'Q';
+                case Glycine:
+                    return 'G';
+                case Histidine:
+                    return 'H';
+                case Isoleucine:
+                    return 'I';
+                case    Leucine:
+                    return 'L';
+                case    Lysine:
+                    return 'K';
+                case Methionine:
+                    return 'M';
+                case    Phenylalanine:
+                    return 'F';
+                case Proline:
+                    return 'P';
+                case Serine:
+                    return 'S';
+                case Threonine:
+                    return 'T';
+                case Tryptophan:
+                    return 'W';
+                case Tyrosine:
+                    return 'Y';
+                case Valine:
+                    return 'V';
+                case NTerminal:
+                    return '<';
+                case CTerminal:
+                    return '>';
+                default:
+                    return 'X';
+            }
+            
         }
     }
 }

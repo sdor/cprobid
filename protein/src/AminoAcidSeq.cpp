@@ -10,23 +10,7 @@
 #include <AminoAcidSeq.h>
 namespace protein {
     using namespace amino_acid;
-    // using namespace boost::iostreams;
 
-
-        // template<typename Container>
-        //     class container_sink {
-        //     public:
-        //         typedef typename Container::value_type  char_type;
-        //         typedef sink_tag                        category;
-        //         container_sink(Container& container) : container_(container) { }
-        //         std::streamsize write(const char_type* s, std::streamsize n) {
-        //             container_.insert(container_.end(), s, s + n);
-        //             return n;
-        //         }
-        //         Container& container() { return container_; }
-        //     private:
-        //         Container& container_;
-        // };
 
         AminoAcidSeq::AminoAcidSeq(const std::string& seq) {
             this->sequence.resize(seq.size());
@@ -69,6 +53,17 @@ namespace protein {
             }            
             map[0]=fragments;
             return map;
+        }
+
+        AminoAcidSeq AminoAcidSeq::concat(const AminoAcidSeq& seq) const {
+            std::vector<AminoAcid> _sequence;
+            for(auto& aa: this->sequence) {
+                _sequence.push_back(aa);
+            }
+            for(auto& aa: seq.sequence) {
+                _sequence.push_back(aa);
+            }
+            return AminoAcidSeq {_sequence};
         }
     
 }
