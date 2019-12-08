@@ -9,7 +9,7 @@
 #include <AminoAcid.h>
 namespace protein {
         using namespace amino_acid;
-
+        double H2O = 1.007825 + 1.007825 + 15.994915;
         class AminoAcidSeq {
             private:
                 std::vector<AminoAcid> sequence;
@@ -24,7 +24,7 @@ namespace protein {
                     auto fold= [](double mass, const AminoAcid& aa) {
                         return mass += aa.monoisotopicMass();
                     };
-                    return std::accumulate(begin(this->sequence),end(this->sequence),mass,fold);
+                    return std::accumulate(begin(this->sequence),end(this->sequence),mass,fold) + H2O;
                 }
 
                 std::map<int, std::vector<AminoAcidSeq>> trypsinize();
