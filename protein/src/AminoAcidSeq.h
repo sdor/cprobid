@@ -27,7 +27,7 @@ namespace protein {
                     return std::accumulate(begin(this->sequence),end(this->sequence),mass,fold) + H2O;
                 }
 
-                std::map<int, std::vector<AminoAcidSeq>> trypsinize();
+                std::map<unsigned int, std::vector<AminoAcidSeq>> trypsinize(unsigned int n_missed=0);
 
                 std::string toString() const {
                     std::string seq;

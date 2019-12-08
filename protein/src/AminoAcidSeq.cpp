@@ -28,10 +28,10 @@ namespace protein {
         AminoAcidSeq::AminoAcidSeq(const AminoAcidSeq& seq): AminoAcidSeq(seq.sequence) {}
         
 
-        std::map<int, std::vector<AminoAcidSeq>> AminoAcidSeq::trypsinize() {
-            std::map<int, std::vector<AminoAcidSeq>> map;
+        std::map<unsigned int, std::vector<AminoAcidSeq>> AminoAcidSeq::trypsinize(unsigned int n_missed) {
+            std::map<unsigned int, std::vector<AminoAcidSeq>> map;
             vector<AminoAcidSeq> fragments;
-            // vector<AminoAcid> fragment;
+
             auto first = begin(this->sequence);
             auto last = begin(this->sequence);
             size_t size = 0;
@@ -52,6 +52,33 @@ namespace protein {
                 fragments.push_back(AminoAcidSeq {fragment} );
             }            
             map[0]=fragments;
+            if(n_missed == 0) {
+                return map;    
+            }
+
+            for(unsigned int i = 1; i < n_missed + 1; i++) {
+                auto start = begin(fragments);
+                auto next = [&start,&fragments,i]() {
+                   auto _next = start; 
+                   for(unsigned int j = 0; j < i + 1 && _next != end(fragments); j++) {
+                       _next++;
+                   }
+                   return _next;
+                };
+                auto the_end = next();
+                while(the_end != end(fragments)) {
+                    auto fragment = std::accumulate(start,the_end,AminoAcidSeq{""},[](auto agg, auto aas) {
+                        return agg + aas;
+                    });
+                    map[i].push_back(fragment);
+                    start++;
+                    if(start == end(fragments)) {
+                        break;
+                    }
+                    the_end = next();
+                }
+            }
+
             return map;
         }
 
