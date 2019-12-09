@@ -8,7 +8,8 @@ val scalaXmlVersion = "1.2.0"
 
 val akkaVersion = "2.5.26"
 
-val alpakkaVersion = "1.1.2"
+//val alpakkaVersion = "1.1.2"
+val alpakkaVersion = "2.0.0-M1"
 
 val akkaHttpVersion = "10.1.10"
 
@@ -42,14 +43,26 @@ val akkaTypedSettings = Seq(
 )
 
 
+lazy val api = (project in file("api"))
+  .settings(commonSettings)
+  .settings(akkaSettings)
+
+lazy val `peptides-store` = (project in file("peptides-store"))
+
 lazy val msms_pipeline = (project in file("."))
  .settings(commonSettings)
+ .settings(akkaSettings)
  .settings(
      libraryDependencies ++= Seq(
        "org.scala-lang.modules" %% "scala-xml" % scalaXmlVersion,
        "com.lightbend.akka" %% "akka-stream-alpakka-xml" % alpakkaVersion,
        "com.lightbend.akka" %% "akka-stream-alpakka-file" % alpakkaVersion,
        "org.mongodb.scala" %% "mongo-scala-driver" % "2.7.0",
+//       "org.reactivemongo" %% "reactivemongo" % "0.19.1",
+       // https://mvnrepository.com/artifact/org.reactivemongo/reactivemongo-bson-macros
+//       "org.reactivemongo" %% "reactivemongo-bson-macros" % "0.19.1",
+//       "org.reactivemongo" %% "reactivemongo-akkastream" % "0.19.1",
+       "com.lightbend.akka" %% "akka-stream-alpakka-mongodb" % alpakkaVersion
      )
  )
 
