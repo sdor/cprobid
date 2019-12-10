@@ -2,9 +2,14 @@ set(LIB_NAME "swissprot")
 set(MODULE_PATH "${PROJECT_SOURCE_DIR}/${LIB_NAME}")
 set(LIB_SRC_PATH "${MODULE_PATH}/src")
 set(LIB_INCLUDE_PATH "${MODULE_PATH}/src")
+# find_package(libconfig++ REQUIRED)
+find_package(libmongocxx REQUIRED)
 include_directories(
-    # ${LIBJSON_INCLUDE_DIR}
     ${LIB_INCLUDE_PATH}
+    # ${LIBCONFIG++_INCLUDE_DIRS}
+    ${LIBMONGOCXX_INCLUDE_DIRS}
+    ${PROTEIN_LIB_INCLUDE_PATH}
+    ${MSMS_LIB_INCLUDE_PATH}
     ${LIBXML2_INCLUDE_DIR}
     ${CATCH_INCLUDE_DIR}
     ${Boost_INCLUDE_DIRS}
@@ -20,6 +25,22 @@ target_link_libraries(
   ${ZLIB_LIBRARIES} 
   ${LIBXML2_LIBRARIES}
   ${Boost_LIBRARIES}
+)
+
+add_executable(
+  digest-swissprot
+  src/digest-swissprot.cpp
+)
+
+target_link_libraries(
+  digest-swissprot
+  ${LIB_NAME}
+  ${PROTEIN_LIB} 
+  ${MSMS_LIB}
+  # config++
+  ${LIBMONGOCXX_LIBRARIES}
+  ${ZLIB_LIBRARIES} 
+  ${LIBXML2_LIBRARIES}
 )
 
 include(CTest)

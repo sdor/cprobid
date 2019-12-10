@@ -1,15 +1,17 @@
 #ifndef MS_AMINO_ACID_SEQ_H
 #define MS_AMINO_ACID_SEQ_H
-
+#include <algorithm>
 #include <numeric>
 #include <vector>
 #include <string>
 #include <map>
-#include <numeric>
 #include <AminoAcid.h>
 namespace protein {
         using namespace amino_acid;
         double H2O = 1.007825 + 1.007825 + 15.994915;
+        double HYDROGEN_MONO_MW = 1.007825;
+        double OXYGEN_MONO_MW = 15.994915;
+
         class AminoAcidSeq {
             private:
                 std::vector<AminoAcid> sequence;
@@ -67,6 +69,8 @@ namespace protein {
                 }
 
                 AminoAcidSeq concat(const AminoAcidSeq& seq) const;
+
+                const std::vector<AminoAcid>& peptide() const { return this->sequence;}
 
         };
 
