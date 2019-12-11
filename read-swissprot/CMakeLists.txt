@@ -8,6 +8,7 @@ include_directories(
     ${CATCH_INCLUDE_DIR}
     ${LIBXML2_INCLUDE_DIR}
     ${Boost_INCLUDE_DIRS}
+    ${PROTEIN_LIB_INCLUDE_PATH}
     ${SWISSPROT_LIB_INCLUDE_PATH}
 )
 
@@ -22,4 +23,5 @@ target_link_libraries(
   ${LIBXML2_LIBRARIES}
   ${Boost_LIBRARIES}
   ${SWISSPROT_LIB}
+  ${PROTEIN_LIB} 
 )

@@ -8,7 +8,8 @@ using namespace protein::amino_acid;
 
 
 TEST_CASE("digest with trypsine","[AminoAcidSequence]") {
-   AminoAcidSeq aas = AminoAcidSeq {"DAHKSEVAHRFKDLGEENFKALVLIAFAQYLQQCPFEDHVKLVNEVTEFAKTCVADESAENCDKSLHTLFGDKLCTVATLRETYGEMADCCAKQE"};
+   AminoAcidSeq aas = AminoAcidSeq {"MRSIKPLRCCNAHGRHVSQEYGRCTLLLFREKLFLQTGLVCNKQCNAPNNDGAESKHHGIHHGSRGALALRGAGVHLLASAALGPRVLAGLVPTGRSVQGSVGQCGRVAQIGRARDVAARKQESYCEK"};
+   
    auto digest = aas.trypsinize(1);
    std::map<unsigned int,std::vector<AminoAcidSeq>> expected;
    //TODO: write compare correctly

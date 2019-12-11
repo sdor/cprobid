@@ -4,6 +4,7 @@
 #include <cstring>
 #include <iostream>
 #include <swissprot.h>
+#include <AminoAcidSeq.h>
 using namespace std;
 using namespace swissprot;
 void reader(void *data, void *context) {
@@ -16,6 +17,8 @@ void reader(void *data, void *context) {
   sequence sequence = parseSequence(ctx);
   xmlXPathFreeContext(ctx);
   xmlFreeDoc(doc);
+  auto aminoAcidSeq = protein::AminoAcidSeq { sequence.sequence };
+  auto digest = aminoAcidSeq.trypsinize(1);
   cout << name << "|" << protein << "|" << organism.scientific_name << endl;
 }
 int main(int argc, char** argv) {

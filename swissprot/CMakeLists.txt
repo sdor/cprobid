@@ -2,9 +2,9 @@ set(LIB_NAME "swissprot")
 set(MODULE_PATH "${PROJECT_SOURCE_DIR}/${LIB_NAME}")
 set(LIB_SRC_PATH "${MODULE_PATH}/src")
 set(LIB_INCLUDE_PATH "${MODULE_PATH}/src")
-# find_package(libbsoncxx 3.4.0 REQUIRED)
-find_package(libmongocxx REQUIRED)
-message( "LIBS: ${LIBBSONCXX_LIBRARIES}" )
+find_package(libbsoncxx 3.4.0 REQUIRED)
+find_package(libmongocxx 3.4.0 REQUIRED)
+
 include_directories(
     ${LIB_INCLUDE_PATH}
     ${LIBBSONCXX_INCLUDE_DIRS}

@@ -27,7 +27,7 @@ void reader(void *data, void *db) {
   using builder::stream::open_document;
   using builder::stream::close_document;
   using bsoncxx::builder::stream::finalize;
-  mongocxx::collection peptides = (*(mongocxx::database *)db)["peptides"];
+  
   auto doc = xmlReadMemory((const char*)data,strlen((const char *)data),NULL,NULL,XML_PARSE_NOBLANKS);
   auto ctx = xmlXPathNewContext(doc);
   xmlXPathRegisterNs(ctx,(const xmlChar*)"sw",(const xmlChar*)"http://uniprot.org/uniprot");
@@ -38,12 +38,14 @@ void reader(void *data, void *db) {
   xmlXPathFreeContext(ctx);
   xmlFreeDoc(doc);
   if(organism.scientific_name == "Homo sapiens") {
+      mongocxx::collection peptides = (*(mongocxx::database *)db)["peptides"];
+      auto options = mongocxx::options::find_one_and_update();
+      options.upsert(true);
       auto aminoAcidSeq = protein::AminoAcidSeq { sequence.sequence };
       auto digest = aminoAcidSeq.trypsinize(1);
       for (auto it = digest.begin(); it != digest.end(); ++it) {
         auto n_missed = it->first;
         for(auto &seq: it->second) {
- 
           peptides.find_one_and_update(document{}
             << "name" << name
             << "organism" << organism.scientific_name
@@ -57,7 +59,8 @@ void reader(void *data, void *db) {
                   << "n_missed" << static_cast<int>(n_missed)
                   << "peptide" << seq.toString()
                   << close_document  
-              << finalize
+              << finalize,
+              options
           );
         }
       }

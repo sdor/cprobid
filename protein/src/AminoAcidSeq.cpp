@@ -36,13 +36,26 @@ namespace protein {
             auto last = begin(this->sequence);
             size_t size = 0;
             for(; last != end(this->sequence); last++,size++) {
-                if(*last == AminoAcid::Arginine || *last == AminoAcid::Lysine) {
-                    last++;
+                if(*first == AminoAcid::Arginine || *first == AminoAcid::Lysine) {
+                    vector<AminoAcid> fragment;
+                    fragment.push_back(*first);
+                    fragments.push_back(AminoAcidSeq {fragment} );
+                    first++;
+                    // last++;
+                    if(first == end(this->sequence)) {
+                        size = 0;
+                        break;
+                    }
+                } else if(*last == AminoAcid::Arginine || *last == AminoAcid::Lysine) {
+                    // last++;
+                    // if(last == end(this->sequence)) {
+                    //     break;
+                    // }
                     size++;
                     vector<AminoAcid> fragment(size);
-                    std::copy(first,last,begin(fragment));
+                    std::copy(first,last+1,begin(fragment));
                     fragments.push_back(AminoAcidSeq {fragment} );
-                    first = last;
+                    first = ++last;
                     size = 0;
                 }
             }
