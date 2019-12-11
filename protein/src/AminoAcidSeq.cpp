@@ -31,39 +31,17 @@ namespace protein {
         std::map<unsigned int, std::vector<AminoAcidSeq>> AminoAcidSeq::trypsinize(unsigned int n_missed) {
             std::map<unsigned int, std::vector<AminoAcidSeq>> map;
             vector<AminoAcidSeq> fragments;
-
-            auto first = begin(this->sequence);
-            auto last = begin(this->sequence);
-            size_t size = 0;
-            for(; last != end(this->sequence); last++,size++) {
-                if(*first == AminoAcid::Arginine || *first == AminoAcid::Lysine) {
-                    vector<AminoAcid> fragment;
-                    fragment.push_back(*first);
+            vector<AminoAcid> fragment;
+            for(auto& aa: this->sequence) {
+                if(aa == AminoAcid::Lysine || aa == AminoAcid::Arginine) {
+                    fragment.push_back(aa);
                     fragments.push_back(AminoAcidSeq {fragment} );
-                    first++;
-                    // last++;
-                    if(first == end(this->sequence)) {
-                        size = 0;
-                        break;
-                    }
-                } else if(*last == AminoAcid::Arginine || *last == AminoAcid::Lysine) {
-                    // last++;
-                    // if(last == end(this->sequence)) {
-                    //     break;
-                    // }
-                    size++;
-                    vector<AminoAcid> fragment(size);
-                    std::copy(first,last+1,begin(fragment));
-                    fragments.push_back(AminoAcidSeq {fragment} );
-                    first = ++last;
-                    size = 0;
+                    fragment.clear();
+                } else {
+                    fragment.push_back(aa);
                 }
             }
-            if(size > 0){
-                vector<AminoAcid> fragment(size);
-                std::copy(first,last,begin(fragment));
-                fragments.push_back(AminoAcidSeq {fragment} );
-            }            
+
             map[0]=fragments;
             if(n_missed == 0) {
                 return map;    
