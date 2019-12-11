@@ -10,6 +10,7 @@
 #include <bsoncxx/builder/stream/document.hpp>
 #include <bsoncxx/builder/stream/helpers.hpp>
 #include <bsoncxx/types.hpp>
+#include <mongocxx/instance.hpp>
 #include <mongocxx/client.hpp>
 #include <mongocxx/stdx.hpp>
 #include <mongocxx/uri.hpp>
@@ -19,22 +20,14 @@ using namespace std;
 using namespace swissprot;
 using namespace bsoncxx;
 
-typedef struct {
-  mongocxx::database* db;
-} metadata;
 
-typedef struct {
-  metadata* metadata;
-  void* data;
-} swissprot_reader_data;
-
-void reader(void *data) {
+void reader(void *data, void *db) {
   using builder::stream::document;
   using builder::stream::array;
   using builder::stream::open_document;
   using builder::stream::close_document;
   using bsoncxx::builder::stream::finalize;
-  mongocxx::collection peptides = (*((swissprot_reader_data*) data)->metadata->db)["peptides"];
+  mongocxx::collection peptides = (*(mongocxx::database *)db)["peptides"];
   auto doc = xmlReadMemory((const char*)data,strlen((const char *)data),NULL,NULL,XML_PARSE_NOBLANKS);
   auto ctx = xmlXPathNewContext(doc);
   xmlXPathRegisterNs(ctx,(const xmlChar*)"sw",(const xmlChar*)"http://uniprot.org/uniprot");
@@ -73,6 +66,12 @@ void reader(void *data) {
 }
 
 int main(int argc, char** argv) {
-    read("/Users/sergey/Downloads/uniprot_sprot.xml.gz", reader);
-    exit(0);
+    auto biosys_uri = std::getenv("BIOSYS_MONGO_URI");
+    auto swissprot_xml = std::getenv("SWISSPROT_XML");
+    mongocxx::instance instance{};
+    mongocxx::uri uri(biosys_uri);
+    mongocxx::client client(uri);
+    mongocxx::database db = client["biosys"];
+    read(swissprot_xml, reader, &db);
+    return 0;
 }

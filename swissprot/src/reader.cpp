@@ -6,7 +6,7 @@
 #include <reader.h>
 
 namespace swissprot {
-  void read(const char* filename, void (*cb)(void*)) {
+  void read(const char* filename, void (*cb)(void*, void*), void* ctx) {
     auto reader = xmlReaderForFile(filename,NULL,  XML_PARSE_NOBLANKS);
     if (reader == nullptr) { return; }
     
@@ -14,7 +14,7 @@ namespace swissprot {
       if( xmlTextReaderNodeType(reader) == XML_READER_TYPE_ELEMENT && xmlStrEqual(xmlTextReaderConstLocalName(reader), (const xmlChar *) "entry") == 1) {
         auto entry = xmlTextReaderReadOuterXml(reader);
         // std::cout << entry << std::endl;
-        cb(entry);
+        cb(entry,ctx);
         xmlFree(entry);
       }
     }

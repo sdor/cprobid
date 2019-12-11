@@ -6,7 +6,7 @@
 #include <swissprot.h>
 using namespace std;
 using namespace swissprot;
-void reader(void *data) {
+void reader(void *data, void *context) {
   auto doc = xmlReadMemory((const char*)data,strlen((const char *)data),NULL,NULL,XML_PARSE_NOBLANKS);
   auto ctx = xmlXPathNewContext(doc);
   xmlXPathRegisterNs(ctx,(const xmlChar*)"sw",(const xmlChar*)"http://uniprot.org/uniprot");
@@ -19,7 +19,7 @@ void reader(void *data) {
   cout << name << "|" << protein << "|" << organism.scientific_name << endl;
 }
 int main(int argc, char** argv) {
-    read("/Users/sergey/Downloads/uniprot_sprot.xml.gz", reader);
+    read("/Users/sergey/Downloads/uniprot_sprot.xml.gz", reader, nullptr);
     return 0;
 }
 

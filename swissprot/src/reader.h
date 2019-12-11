@@ -2,6 +2,6 @@
 #define SWISSPROT_READER_H
 
 namespace swissprot {
-    extern void read(const char* filename, void (*cb)(void*));
+    extern void read(const char* filename, void (*cb)(void*,void*), void*);
 }
 #endif

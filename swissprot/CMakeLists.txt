@@ -2,11 +2,12 @@ set(LIB_NAME "swissprot")
 set(MODULE_PATH "${PROJECT_SOURCE_DIR}/${LIB_NAME}")
 set(LIB_SRC_PATH "${MODULE_PATH}/src")
 set(LIB_INCLUDE_PATH "${MODULE_PATH}/src")
-# find_package(libconfig++ REQUIRED)
+# find_package(libbsoncxx 3.4.0 REQUIRED)
 find_package(libmongocxx REQUIRED)
+message( "LIBS: ${LIBBSONCXX_LIBRARIES}" )
 include_directories(
     ${LIB_INCLUDE_PATH}
-    # ${LIBCONFIG++_INCLUDE_DIRS}
+    ${LIBBSONCXX_INCLUDE_DIRS}
     ${LIBMONGOCXX_INCLUDE_DIRS}
     ${PROTEIN_LIB_INCLUDE_PATH}
     ${MSMS_LIB_INCLUDE_PATH}
@@ -37,8 +38,7 @@ target_link_libraries(
   ${LIB_NAME}
   ${PROTEIN_LIB} 
   ${MSMS_LIB}
-  # config++
-  ${LIBMONGOCXX_LIBRARIES}
+  ${LIBMONGOCXX_LIBRARIES} 
   ${ZLIB_LIBRARIES} 
   ${LIBXML2_LIBRARIES}
 )
