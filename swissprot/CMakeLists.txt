@@ -43,6 +43,22 @@ target_link_libraries(
   ${LIBXML2_LIBRARIES}
 )
 
+add_executable(
+  generate-precursors
+  src/generate-precursors
+)
+
+target_link_libraries(
+  generate-precursors
+  ${LIB_NAME}
+  ${PROTEIN_LIB} 
+  ${MSMS_LIB}
+  ${LIBMONGOCXX_LIBRARIES} 
+  ${ZLIB_LIBRARIES} 
+  ${LIBXML2_LIBRARIES}
+)
+
+
 include(CTest)
 enable_testing()
 add_executable(
