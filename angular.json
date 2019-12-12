@@ -1,0 +1,141 @@
+{
+  "version": 1,
+  "projects": {
+    "msms-pipeline": {
+      "projectType": "application",
+      "schematics": {
+        "@nrwl/angular:component": {
+          "style": "scss"
+        }
+      },
+      "root": "apps/msms-pipeline",
+      "sourceRoot": "apps/msms-pipeline/src",
+      "prefix": "cprobid",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/apps/msms-pipeline",
+            "index": "apps/msms-pipeline/src/index.html",
+            "main": "apps/msms-pipeline/src/main.ts",
+            "polyfills": "apps/msms-pipeline/src/polyfills.ts",
+            "tsConfig": "apps/msms-pipeline/tsconfig.app.json",
+            "aot": false,
+            "assets": [
+              "apps/msms-pipeline/src/favicon.ico",
+              "apps/msms-pipeline/src/assets"
+            ],
+            "styles": ["apps/msms-pipeline/src/styles.scss"],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/msms-pipeline/src/environments/environment.ts",
+                  "with": "apps/msms-pipeline/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "msms-pipeline:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "msms-pipeline:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "msms-pipeline:build"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "apps/msms-pipeline/tsconfig.app.json",
+              "apps/msms-pipeline/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!apps/msms-pipeline/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "apps/msms-pipeline/jest.config.js",
+            "tsConfig": "apps/msms-pipeline/tsconfig.spec.json",
+            "setupFile": "apps/msms-pipeline/src/test-setup.ts"
+          }
+        }
+      }
+    },
+    "msms-pipeline-e2e": {
+      "root": "apps/msms-pipeline-e2e",
+      "sourceRoot": "apps/msms-pipeline-e2e/src",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/msms-pipeline-e2e/cypress.json",
+            "tsConfig": "apps/msms-pipeline-e2e/tsconfig.e2e.json",
+            "devServerTarget": "msms-pipeline:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "msms-pipeline:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": ["apps/msms-pipeline-e2e/tsconfig.e2e.json"],
+            "exclude": ["**/node_modules/**", "!apps/msms-pipeline-e2e/**"]
+          }
+        }
+      }
+    }
+  },
+  "cli": {
+    "defaultCollection": "@nrwl/angular"
+  },
+  "schematics": {
+    "@nrwl/angular:application": {
+      "unitTestRunner": "jest",
+      "e2eTestRunner": "cypress"
+    },
+    "@nrwl/angular:library": {
+      "unitTestRunner": "jest"
+    }
+  },
+  "defaultProject": "msms-pipeline"
+}

@@ -1,0 +1,18 @@
+{
+  "npmScope": "cprobid",
+  "implicitDependencies": {
+    "angular.json": "*",
+    "package.json": "*",
+    "tsconfig.json": "*",
+    "tslint.json": "*",
+    "nx.json": "*"
+  },
+  "projects": {
+    "msms-pipeline-e2e": {
+      "tags": []
+    },
+    "msms-pipeline": {
+      "tags": []
+    }
+  }
+}
