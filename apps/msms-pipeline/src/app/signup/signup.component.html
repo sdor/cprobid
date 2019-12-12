@@ -1,0 +1,24 @@
+
+<h1>Sing Up</h1>
+<form [formGroup]="sigupForm" (ngSubmit)="onSubmit()">
+  <div>
+    <mat-form-field>
+      <input matInput type="email" id="email" name="email" required placeholder="Email" formControlName="email">
+    </mat-form-field>
+  </div>
+  <div>
+    <mat-form-field>
+      <input matInput type="password" id="password" name="password" required placeholder="Password" formControlName="password">
+    </mat-form-field>
+  </div>
+  <div>
+    <mat-form-field>
+      <input matInput type="password" id="password_confirmation" name="password_confirmation" required placeholder="Password Confirmation" formControlName="password_confirmation">
+    </mat-form-field>
+  </div>
+  <div>
+    <button id="signin-button" mat-flat-button color="primary" >SignUp</button>
+    <a id="signup" routerLink="/signin" routerLinkActive="active">SignIn</a>
+  </div>
+</form>
+<div class="mat-error">{{error}}</div>

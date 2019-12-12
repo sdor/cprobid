@@ -25,7 +25,10 @@
               "apps/msms-pipeline/src/favicon.ico",
               "apps/msms-pipeline/src/assets"
             ],
-            "styles": ["apps/msms-pipeline/src/styles.scss"],
+            "styles": [
+              "./node_modules/@angular/material/prebuilt-themes/pink-bluegrey.css",
+              "apps/msms-pipeline/src/styles.scss"
+            ],
             "scripts": []
           },
           "configurations": {
@@ -63,7 +66,8 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "msms-pipeline:build"
+            "browserTarget": "msms-pipeline:build",
+            "proxyConfig": "proxy.conf.json"
           },
           "configurations": {
             "production": {
@@ -84,7 +88,10 @@
               "apps/msms-pipeline/tsconfig.app.json",
               "apps/msms-pipeline/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**", "!apps/msms-pipeline/**"]
+            "exclude": [
+              "**/node_modules/**",
+              "!apps/msms-pipeline/**"
+            ]
           }
         },
         "test": {
@@ -118,8 +125,13 @@
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "tsConfig": ["apps/msms-pipeline-e2e/tsconfig.e2e.json"],
-            "exclude": ["**/node_modules/**", "!apps/msms-pipeline-e2e/**"]
+            "tsConfig": [
+              "apps/msms-pipeline-e2e/tsconfig.e2e.json"
+            ],
+            "exclude": [
+              "**/node_modules/**",
+              "!apps/msms-pipeline-e2e/**"
+            ]
           }
         }
       }

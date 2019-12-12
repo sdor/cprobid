@@ -3,7 +3,7 @@
 class User
   include Mongoid::Document
   include Mongoid::Timestamps
-  # include Mongoid::Locker
+  include Mongoid::Locker
 
  # field :locker_locked_at, type: Time
  # field :locker_locked_until, type: Time
@@ -44,8 +44,12 @@ class User
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
-  devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable
+  devise :database_authenticatable,
+         :registerable,
+         :recoverable,
+         :rememberable,
+         :trackable,
+         :validatable
   include DeviseTokenAuth::Concerns::User
 
   index({ email: 1 }, { name: 'email_index', unique: true, background: true })
@@ -53,4 +57,7 @@ class User
   index({ confirmation_token: 1 }, { name: 'confirmation_token_index', unique: true, sparse: true, background: true })
   index({ uid: 1, provider: 1}, { name: 'uid_provider_index', unique: true, background: true })
   # index({ unlock_token: 1 }, { name: 'unlock_token_index', unique: true, sparse: true, background: true })
+  def saved_change_to_attribute?(attr_name, **options)
+    true
+  end
 end
