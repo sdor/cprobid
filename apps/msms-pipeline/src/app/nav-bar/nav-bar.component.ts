@@ -1,5 +1,6 @@
+import { AccountService } from './../account.service';
 import { Component, OnInit } from '@angular/core';
-import { AngularTokenService } from 'angular-token';
+
 
 @Component({
   selector: 'cprobid-nav-bar',
@@ -8,12 +9,12 @@ import { AngularTokenService } from 'angular-token';
 })
 export class NavBarComponent implements OnInit {
 
-  constructor(private tokenService: AngularTokenService) { }
+  constructor(private account: AccountService) { }
 
   ngOnInit() {
   }
 
   get signedIn() {
-    return this.tokenService.userSignedIn();
+    return this.account.userSignedIn();
   }
 }

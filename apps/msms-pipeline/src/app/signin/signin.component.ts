@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { AccountService } from './../account.service';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
@@ -13,7 +14,7 @@ export class SigninComponent implements OnInit {
     password: new FormControl(''),
   });
   error: string;
-  constructor(private account: AccountService) { }
+  constructor(private account: AccountService, private router: Router) { }
 
   ngOnInit() {
   }
@@ -21,7 +22,9 @@ export class SigninComponent implements OnInit {
   onSubmit() {
     const {email, password} = this.signinForm.value;
     this.account.signin(email.trim(),password.trim()).toPromise().then(
-      (res) => {}
+      (res) => {
+        this.router.navigateByUrl('/');
+      }
     ).catch(
       (err) => {
         console.log(err);

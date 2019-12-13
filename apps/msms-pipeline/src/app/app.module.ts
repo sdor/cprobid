@@ -1,10 +1,9 @@
+
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { AngularTokenModule } from 'angular-token';
-import { AngularTokenService } from 'angular-token';
 import { SigninComponent } from './signin/signin.component';
 import { SignupComponent } from './signup/signup.component';
 import { MsmsExperimentsComponent } from './msms-experiments/msms-experiments.component';
@@ -19,14 +18,19 @@ import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatButtonModule} from '@angular/material/button';
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
+import { JwtModule } from "@auth0/angular-jwt";
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { JwtTokenInterceptor } from './jwt-token.interceptor';
 
 const routes: Routes = [
   {path: '', redirectTo: '/msms-experiments', pathMatch: 'full'},
-  {path: 'msms-experiments', component: MsmsExperimentsComponent, canActivate: [AngularTokenService]},
+  {path: 'msms-experiments', component: MsmsExperimentsComponent /*, canActivate: [AngularTokenService]*/},
   {path: 'signin', component: SigninComponent},
   {path: 'signup', component: SignupComponent},
   {path: '**', component: PageNotFoundComponentComponent }
 ]
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -43,11 +47,16 @@ const routes: Routes = [
       routes,
       { enableTracing: true } // <-- debugging purposes only
     ),
-    AngularTokenModule.forRoot({
-      apiBase: 'api',
-      signInRedirect: 'signin'
-    }),
     HttpClientModule,
+    JwtModule.forRoot({
+      config: {
+        tokenGetter:() => {
+          return localStorage.getItem("auth_token");
+        },
+        whitelistedDomains: ["localhost","localhost:4200"],
+        blacklistedRoutes: ["/api/users","/api/users/sign_in"]
+      }
+    }),
     ReactiveFormsModule,
     MatPaginatorModule,
     MatToolbarModule,
@@ -58,7 +67,9 @@ const routes: Routes = [
     MatButtonModule,
 
   ],
-  providers: [AngularTokenModule],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: JwtTokenInterceptor, multi: true },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

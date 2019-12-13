@@ -26,6 +26,7 @@ export class SignupComponent implements OnInit {
 
   onSubmit() {
     const {email,password,password_confirmation} = this.sigupForm.value;
+
     this.account.signup(email,password,password_confirmation).toPromise().then(
       () => {
         this.router.navigateByUrl('/');
