@@ -4,6 +4,8 @@
  **/
 
 import * as express from 'express';
+import * as bodyParser from 'body-parser';
+import * as morgan from 'morgan';
 import * as dotenv from 'dotenv';
 import {MongoClient} from 'mongodb';
 import * as bcrypt from 'bcrypt';
@@ -47,8 +49,11 @@ const create_user = (data: any) => {
 
 const app = express();
 
+app.use(morgan('combined'))
+app.use(bodyParser.json());
+
 app.post('/api/users',(req,res) => {
-  const {email, password } = req.body;
+  const {user: {email, password } } = req.body;
   users_collection().then(
     (users) => {
       return users.findOne({email});
@@ -69,8 +74,9 @@ app.post('/api/users',(req,res) => {
   });
 });
 
-app.post('/api/signin',(req,res)=> {
-   const {email, password } = req.body;
+app.post('/api/users/sign_in',(req,res)=> {
+  const { email, password } = req.body;
+   console.log(req.body);
    dbPromise.then((db) => {
      return db.collection('users')
    }).then(
@@ -121,8 +127,7 @@ app.use('/api/*',(req,res,next) => {
 
 app.get('/api/ms_ms_experiments',(req,res) => {
    const user_id = res.locals.user_id;
-   const params: ParamsDictionary = req.params;
-   let retmax = req.params['retmax'];//("retmax","10");
+   let retmax = req.query.retmax;
    if(retmax === null) {
      retmax = "10";
    }
@@ -143,7 +148,7 @@ app.get('/api/ms_ms_experiments',(req,res) => {
 //   res.send({ message: 'Welcome to backend!' });
 // });
 
-const port = process.env.port || 3000;
+const port = process.env.port || 3333;
 const server = app.listen(port, () => {
   console.log(`Listening at http://localhost:${port}/api`);
 });

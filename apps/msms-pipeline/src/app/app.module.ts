@@ -1,3 +1,4 @@
+import { AuthGuardGuard } from './auth-guard.guard';
 
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
@@ -24,7 +25,7 @@ import { JwtTokenInterceptor } from './jwt-token.interceptor';
 
 const routes: Routes = [
   {path: '', redirectTo: '/msms-experiments', pathMatch: 'full'},
-  {path: 'msms-experiments', component: MsmsExperimentsComponent /*, canActivate: [AngularTokenService]*/},
+  {path: 'msms-experiments', component: MsmsExperimentsComponent , canActivate: [AuthGuardGuard]},
   {path: 'signin', component: SigninComponent},
   {path: 'signup', component: SignupComponent},
   {path: '**', component: PageNotFoundComponentComponent }

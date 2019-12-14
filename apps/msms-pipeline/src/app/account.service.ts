@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { JwtHelperService } from '@auth0/angular-jwt';
 
 
@@ -29,8 +29,12 @@ export class AccountService {
     });
   }
   public signin(email: string, password: string) {
-    return this.http.post('/api/users/sign_in',{
-     user: {email,password}
+    let httpHeaders = new HttpHeaders({
+      'Content-Type' : 'application/json',
+      'Cache-Control': 'no-cache'
+    });
+    return this.http.post('/api/users/sign_in',{email,password},{
+      headers: httpHeaders
     });
     // return this.tokenService.signIn({
     //   login:    email,
