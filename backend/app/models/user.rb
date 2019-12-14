@@ -42,4 +42,11 @@ class User
 
   field :jti , type: String
   index({ jti: 1 }, { unique: true, name: "jti_index" })
+
+  has_many :ms_ms_experiments
+
+  def self.find_for_jwt_authentication(sub)
+    p find(sub)
+    find(sub)
+  end
 end
